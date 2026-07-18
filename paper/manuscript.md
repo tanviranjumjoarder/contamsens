@@ -39,9 +39,15 @@ in a six-model time-series foundation-model benchmark is fragile
 the method certifies exactly the claim it should (Llama-2-13B ≻ 7B,
 Γ\* = 0.504, FDR-certified) while flagging frontier margins as fragile
 (Γ\* ≤ 0.188). Freshness and repeated draws emerge as quantified design
-levers. Sensitivity analysis converts an unanswerable question — *is the
-benchmark contaminated?* — into an answerable one, with a one-number
-reporting standard any leaderboard can adopt.
+levers. In a **pre-registered confirmatory audit** of 58 adjacent-pair
+claims across 16 models and four Open LLM Leaderboard benchmarks,
+**84.5% of claims are not contamination-robust** at the frozen calibration
+(exact 95% CI [72.6%, 92.7%]; one-sided p = 2.7×10⁻²¹ against the
+pre-registered 25% threshold), and only 8 claims — all with margins above
+5 points — earn FDR-controlled robustness certificates. Sensitivity
+analysis converts an unanswerable question — *is the benchmark
+contaminated?* — into an answerable one, with a one-number reporting
+standard any leaderboard can adopt.
 
 **Keywords:** benchmark contamination; partial identification; sensitivity
 analysis; evaluation methodology; leaderboards; Rosenbaum bounds.
@@ -312,8 +318,35 @@ calibrated range; **Llama-2-13B ≻ Llama-2-7B (5.0pt) has Γ\* = 0.504,
 above the entire calibrated range, and is FDR-certified robust
 (p = 0.006)** — precisely the claim that independent scaling evidence says
 should survive. The instrument separates the claim population exactly as
-designed. [PENDING: the pre-registered confirmatory audit over the frozen
-corpus; these pairs are flagged exploratory.]
+designed.
+
+### 9.1 The pre-registered confirmatory audit
+
+Protocol frozen (PREREGISTRATION.md v1.0, 19 July 2026, git tag
+`prereg-freeze-v1.0`) before any confirmatory Γ\* was computed: 16 fixed
+candidate models × 5 Open LLM Leaderboard v1-archive tasks, adjacent-pair
+claims, primary rule Γ\*(π = 0.1) < Λ_ref (pooled 0.355; HellaSwag stratum
+0.42), BH-FDR primary with BY sensitivity, ρ ∈ {0, 0.2}. Protocol notes,
+all logged mechanically at run time: TruthfulQA was dropped entirely (the
+archive stores mc1/mc2, not the frozen acc/acc_norm specification);
+falcon-7b was dropped on ARC (its snapshot's item template shares no items
+with the 15-model modal universe) and GPT-J on Winogrande (malformed score
+column).
+
+**Result (Fig. 1 / f17): 49 of 58 claims — 84.5% — are not
+contamination-robust** (exact two-sided 95% CI [72.6%, 92.7%]; one-sided
+p = 2.7×10⁻²¹ against the pre-registered H4 threshold of 25%; excluding
+pilot-overlap pairs: 47/56 = 83.9%, CI [71.7%, 92.4%]). The ρ = 0.2
+sensitivity leaves the count unchanged. Per task, the median Γ\*(0.1) is
+0.084–0.120 on HellaSwag, Winogrande, and ARC — the typical adjacent claim
+tolerates less than one-third of the calibrated contamination strength —
+and 0.212 on GSM8K, whose margins are larger. Only **8 claims earn
+BH-FDR robustness certificates (6 under BY)**, and every certified claim
+has a margin above 5 points: cross-generation capability gaps
+(e.g. Llama-3-70B ≻ Qwen1.5-14B on GSM8K) and "everything beats GPT-J."
+The leaderboard's *ordering of eras* is contamination-robust; its
+*ordering of neighbors* is not. [OSF timestamp pending author filing —
+OSF_FILING.md; results labeled per protocol until then.]
 
 ## 10. Design sensitivity: what buys robustness
 
@@ -345,6 +378,11 @@ LLM corpus scale but is measured, not assumed. (6) This artifact was
 audited by its own author (four forensic iterations, including a critical
 binary-regime guard); an independent adversarial audit is the correct next
 scrutiny.
+
+*Formal statements and proofs of Propositions 1–3, Theorem 4, and the
+supporting lemmas (R2 degeneracy, finite-draw bias directions,
+Imbens–Manski properties, spillover extension) are in Appendix A
+(`appendix_proofs.md`), each pinned to a named unit test.*
 
 ## 12. Reproducibility statement
 

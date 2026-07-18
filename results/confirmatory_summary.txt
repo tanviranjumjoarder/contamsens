@@ -1,0 +1,10 @@
+CONFIRMATORY AUDIT — protocol v1.0 (frozen 19 Jul 2026, tag prereg-freeze-v1.0, commit ca7773b); OSF timestamp pending
+============================================================================
+H4 [all claims]: 49/58 non-robust = 84.5% (95% CI [74.5%, 100.0%]); H4 (>=25%) one-sided p = 2.683e-21
+H4 [excl. pilot-overlap]: 47/56 non-robust = 83.9% (95% CI [73.6%, 100.0%]); H4 (>=25%) one-sided p = 3.062e-20
+rho=0.2 sensitivity: 49/58 non-robust = 84.5%
+FDR-certified robust: BH 8/58, BY 6/58
+  arc:challenge|25: 13/14 non-robust; median Gamma*(0.1) = 0.120
+  gsm8k|5: 8/15 non-robust; median Gamma*(0.1) = 0.212
+  hellaswag|10: 14/15 non-robust; median Gamma*(0.1) = 0.084
+  winogrande|5: 14/14 non-robust; median Gamma*(0.1) = 0.087

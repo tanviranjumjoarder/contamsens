@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use contamsens, please cite it as below."
+title: "contamsens: Contamination Sensitivity Analysis for Benchmark Claims"
+version: 0.2.0
+date-released: 2026-07-17
+authors:
+  - family-names: Joarder
+    given-names: Tanvir Anjum
+    email: ussash93@gmail.com
+    affiliation: "Department of Computer Science and Engineering, Rajshahi University of Engineering & Technology"
+abstract: >-
+  Partial identification and sensitivity analysis for machine-learning
+  evaluation under unmeasured training-data contamination. Computes, for any
+  leaderboard claim, the contamination robustness value Gamma* -- the minimum
+  contamination strength that would overturn the claim -- from published
+  scores alone, with no reference models, reference benchmarks, or training
+  corpus access required.
+keywords:
+  - benchmark contamination
+  - partial identification
+  - sensitivity analysis
+  - evaluation methodology
+license: MIT

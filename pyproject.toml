@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contamsens"
+version = "0.2.0"
+description = "Contamination sensitivity analysis for benchmark claims: partial identification, Gamma*, and FDR-controlled robustness certificates"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Tanvir Anjum Joarder", email = "ussash93@gmail.com" }]
+keywords = [
+  "benchmark contamination", "partial identification", "sensitivity analysis",
+  "evaluation", "leaderboard", "Rosenbaum bounds",
+]
+dependencies = ["numpy>=2.0", "pandas>=2.2"]
+
+[project.optional-dependencies]
+experiments = ["matplotlib>=3.10", "scipy>=1.15", "scikit-learn>=1.6"]
+test = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

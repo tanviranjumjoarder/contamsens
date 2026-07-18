@@ -1,0 +1,1 @@
+gate cells: 16 | tight 1pt margins overturnable in 81% of plausible (lam,pi) cells | 10pt cross-tier margins overturnable in 12% | verdict: PASS

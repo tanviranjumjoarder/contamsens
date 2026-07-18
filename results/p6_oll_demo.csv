@@ -1,0 +1,4 @@
+model_a,model_b,margin,gamma_star,robust_at_ref,pi,lam_ref,rho,m_draws,regime,fragility_p,certified_robust_fdr,gamma_star_display,task,status
+meta-llama__Meta-Llama-3-8B,mistralai__Mistral-7B-v0.1,0.002564102564102555,0.02564102564102555,False,0.1,0.2,0.0,1,simple,0.9401197604790419,False,0.026,arc:challenge|25,EXPLORATORY_DEMO
+mistralai__Mistral-7B-v0.1,meta-llama__Llama-2-13b-hf,0.018803418803418737,0.18803418803418737,False,0.1,0.2,0.0,1,simple,0.5768463073852296,False,0.188,arc:challenge|25,EXPLORATORY_DEMO
+meta-llama__Llama-2-13b-hf,meta-llama__Llama-2-7b-hf,0.05042735042735047,0.5042735042735047,True,0.1,0.2,0.0,1,simple,0.005988023952095809,True,0.504,arc:challenge|25,EXPLORATORY_DEMO

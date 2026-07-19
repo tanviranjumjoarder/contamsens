@@ -198,11 +198,16 @@ def main() -> None:
     for label, sub in (("all claims", out),
                        ("excl. pilot-overlap", out[~out.pilot_overlap])):
         k, n = int(sub.non_robust_primary.sum()), len(sub)
-        bt = binomtest(k, n, 0.25, alternative="greater")
-        ci = bt.proportion_ci(confidence_level=0.95, method="exact")
+        bt = binomtest(k, n, 0.25, alternative="greater")  # directional H4
+        # Descriptive interval is the TWO-SIDED Clopper-Pearson CI. Calling
+        # proportion_ci on the 'greater' test returns a [low, 1.0] one-sided
+        # interval whose upper endpoint is uninformative and disagrees with
+        # the manuscript; recompute from a two-sided binomtest.
+        ci = binomtest(k, n, 0.25).proportion_ci(
+            confidence_level=0.95, method="exact")
         lines.append(
             f"H4 [{label}]: {k}/{n} non-robust = {k / n:.1%} "
-            f"(95% CI [{ci.low:.1%}, {ci.high:.1%}]); "
+            f"(two-sided 95% CI [{ci.low:.1%}, {ci.high:.1%}]); "
             f"H4 (>=25%) one-sided p = {bt.pvalue:.4g}")
     k2 = int(out.non_robust_rho02.sum())
     lines.append(f"rho=0.2 sensitivity: {k2}/{len(out)} non-robust "

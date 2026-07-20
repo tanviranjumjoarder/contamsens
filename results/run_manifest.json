@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-07-20T11:45:37Z",
+  "timestamp_utc": "2026-07-20T23:09:19Z",
   "python": "3.13.1",
   "platform": "Windows-10-10.0.19045-SP0",
   "machine": "AMD64",
@@ -19,8 +19,9 @@
     "P5 design sensitivity",
     "Lambda_ref sensitivity (f18)",
     "adjacent-pair selection check",
+    "P2d corpus-mix dilution (f19)",
     "P4 pilot (atlas)",
     "P2c LoRA analysis"
   ],
-  "wall_seconds": 63.6
+  "wall_seconds": 52.8
 }

@@ -1,13 +1,13 @@
 # How Contaminated Would It Have To Be? Partial Identification and Sensitivity Analysis for Benchmark Claims Under Unmeasured Data Contamination
 
 **Tanvir Anjum Joarder**¹
-¹ Department of Computer Science and Engineering, Rajshahi University of Engineering & Technology, Rajshahi-6204, Bangladesh — `ussash93@gmail.com`
+¹ Department of Computer Science and Engineering, Rajshahi University of Engineering & Technology, Rajshahi-6204, Bangladesh. `ussash93@gmail.com`
 
-*Draft v0.2 — 20 July 2026. Every number in this draft is regenerable via
-`python reproduce.py` and maps to a script through PROVENANCE.md. The
-pre-registered confirmatory audit (§9.1) and the 24-configuration GPU-scale
-CONTAM-CTRL grid (§7) are complete; the single remaining [PENDING] marker
-awaits the corpus-mixed injection run.*
+*Draft v0.3, 21 July 2026. Every number in this draft is regenerable via
+`python reproduce.py` and maps to a script through PROVENANCE.md. All
+planned experiments are complete: the pre-registered confirmatory audit
+(§9.1), the 24-configuration GPU-scale CONTAM-CTRL grid, and the
+corpus-mixed dilution run (§7). No pending markers remain.*
 
 ---
 
@@ -15,12 +15,12 @@ awaits the corpus-mixed injection run.*
 
 Leaderboard claims of the form "model A outperforms model B" are treated as
 measurements of capability, but they are observational estimates whose
-dominant error source — training-data contamination — is unmodeled. The
+dominant error source, training-data contamination, is unmodeled. The
 field's response has been *detection*, which requires access to training
 corpora (impossible for closed-weight models), reference benchmarks, or
 reference models assumed clean, and which cannot answer the only question
 that matters: does the contamination change the conclusion? We import the
-epistemology causal inference developed for unmeasured confounding: stop
+epistemology that causal inference developed for unmeasured confounding: stop
 trying to detect the bias and *bound* it. We formalize contamination as an
 identification failure, introduce a Contamination Sensitivity Model
 CSM±(Λ⁺, Λ⁻, π, Γ_sel, ε) whose every parameter has a measured empirical
@@ -34,7 +34,13 @@ FDR-certified robustness across a claim corpus. Ground-truth experiments
 with *emergent* contamination (models genuinely trained on leaked items)
 validate the assumed lift channel (envelope–headroom correlation ≥ 0.91 in
 15/15 configurations), expose and repair two failure modes (two-sided lift;
-spillover), and confirm coverage. On real data, every adjacent ranking claim
+spillover), and confirm coverage. A corpus-dilution experiment then closes
+the calibration loop: a single diluted exposure (the scraped-pretraining
+scenario) lands measured contamination strength inside the
+literature-derived field range, while repeated diluted exposures
+consolidate toward complete memorization, so accidental and deliberate
+contamination require different constants and calibration must be
+dose-stratified. On real data, every adjacent ranking claim
 in a six-model time-series foundation-model benchmark is fragile
 (Γ\* ≤ 0.114 at π = 0.1), and on Open LLM Leaderboard ARC-Challenge details
 the method certifies exactly the claim it should (Llama-2-13B ≻ 7B,
@@ -44,11 +50,11 @@ levers. In a **pre-registered confirmatory audit** of 58 adjacent-pair
 claims across 16 models and four Open LLM Leaderboard benchmarks,
 **84.5% of claims are not contamination-robust** at the frozen calibration
 (exact 95% CI [72.6%, 92.7%]; one-sided p = 2.7×10⁻²¹ against the
-pre-registered 25% threshold), and only 8 claims — all with margins above
-5 points — earn FDR-controlled robustness certificates. The finding is not
+pre-registered 25% threshold), and only 8 claims, all with margins above
+5 points, earn FDR-controlled robustness certificates. The finding is not
 an artifact of the frozen constant: sweeping contamination strength across
 its whole plausible range leaves the conclusion intact, and the hypothesis
-clears its pre-registered bar for every Λ ≥ 0.055 — beneath the floor of the
+clears its pre-registered bar for every Λ ≥ 0.055, beneath the floor of the
 calibrated field range. In the single-draw binary regime the rule provably
 reduces to a *calibrated margin threshold*; we show why deriving that
 threshold, rather than asserting one, is the contribution, and where richer
@@ -67,18 +73,18 @@ analysis; evaluation methodology; leaderboards; Rosenbaum bounds.
 Every empirical claim in machine learning ultimately rests on a benchmark
 score, and benchmark scores rest on an assumption nobody can verify: that
 the test items did not leak into training. Contamination is documented and
-material — clean/dirty gaps of 15.3 points on HellaSwag for LLaMA-70B
+material: clean/dirty gaps of 15.3 points on HellaSwag for LLaMA-70B
 [Touvron et al., 2023], estimated gains up to 14 points on flagged subsets
-[Llama 3, 2024], 13-point drops on a clean GSM8K mirror — yet the response
+[Llama 3, 2024], 13-point drops on a clean GSM8K mirror. Yet the response
 of both producers and auditors has been **detection**: n-gram overlap,
 membership inference, kernel divergence, lineage audits [2404.00699;
 2510.13654; 2502.00678]. Detection fails structurally three times over.
 For closed-weight models the pretraining corpus is unobservable, so
-detection is impossible *in principle*, not merely in practice. Detection
+detection is impossible *in principle* rather than merely in practice. Detection
 yields a contestable binary that vendors dispute and no protocol
 adjudicates. And detection is silent on the decision-relevant question:
 a benchmark can be contaminated with the ranking robust, or barely
-contaminated with the ranking fragile — detection cannot tell these apart.
+contaminated with the ranking fragile; detection cannot tell these apart.
 
 Meanwhile the statistical wing of evaluation reform quantifies the *wrong
 error*. Rank intervals [2606.08679] propagate sampling uncertainty, which
@@ -88,7 +94,7 @@ interval.
 
 Causal inference confronted exactly this epistemology half a century ago.
 When a confounder cannot be measured, one does not detect it; one reports
-**how strong it would have to be to overturn the conclusion** — Rosenbaum's
+**how strong it would have to be to overturn the conclusion**: Rosenbaum's
 Γ, the marginal sensitivity model, the E-value [Rosenbaum, 1987; VanderWeele
 & Ding, 2017; Chernozhukov et al., 2022]. This paper ports that machinery
 to ML evaluation. The reduction is, once stated, almost obvious:
@@ -96,7 +102,7 @@ to ML evaluation. The reduction is, once stated, almost obvious:
 and measured skill, and benchmark scores are therefore partially
 identified.** Nothing else in this paper is obvious; the port requires a new
 sensitivity model (contamination acts through a monotone, bounded,
-headroom-proportional channel — an assumption we *test* with real
+headroom-proportional channel, an assumption we *test* with real
 memorization experiments, then twice repair), a new calibration strategy
 (post-cutoff items are clean by construction), and a new design theory
 (freshness and repeated draws purchase identification).
@@ -116,15 +122,15 @@ memorization experiments, then twice repair), a new calibration strategy
    paired item bootstrap, a two-sided finite-draw bias analysis with a
    practical prescription (sharp bounds require ≥ 10 draws per item), and
    FDR-certified robustness across claim corpora (§6).
-5. Ground-truth validation with **emergent** contamination — models
-   actually trained on leaked items — which confirmed the channel shape,
+5. Ground-truth validation with **emergent** contamination (models
+   actually trained on leaked items), which confirmed the channel shape,
    *falsified* strict monotonicity (up to 27% of leaked items are hurt),
    and surfaced a spillover channel; both repairs are part of the model,
    not the rhetoric (§7).
 6. Empirically calibrated Λ priors from the published contamination
    literature, with a meta-analytic central range [0.1, 0.45] (§8).
-7. Exploratory case studies on two real benchmarks — a six-model TSFM
-   transfer atlas and Open LLM Leaderboard ARC-Challenge details — plus a
+7. Exploratory case studies on two real benchmarks (a six-model TSFM
+   transfer atlas and Open LLM Leaderboard ARC-Challenge details), plus a
    pre-registered protocol for the confirmatory audit (§9).
 8. Design sensitivity: quantified prescriptions for benchmark builders
    (§10), and an open, tested, one-command-reproducible library.
@@ -148,7 +154,7 @@ their effect estimates as calibration inputs and use ConStat as the natural
 baseline and convergent-validity check.
 
 **Leaderboard statistics.** Rank intervals [2606.08679] give
-sampling-uncertainty-aware rankings — our Λ = 0 special case. Perturbation
+sampling-uncertainty-aware rankings, our Λ = 0 special case. Perturbation
 and social-choice analyses [2605.15761; 2605.23628; 2402.01781] document
 instability empirically without an inferential model. Psychometric and
 efficiency work [2402.14992; 2501.17200] models items, not contamination.
@@ -163,18 +169,18 @@ measurement theory but supplies no estimator; we supply one.
 ## 3. Setup: the clean score is partially identified
 
 A benchmark has items i = 1…n; fix a model m. Let y\*ᵢ ∈ [0,1] be the
-**clean score** — the counterfactual per-item score had item i never
-entered training — and yᵢ the observed score; cᵢ ∈ {0,1} the latent
+**clean score** (the counterfactual per-item score had item i never
+entered training) and yᵢ the observed score; cᵢ ∈ {0,1} the latent
 contamination indicator. The estimand is θ = (1/n) Σ y\*ᵢ. Leaderboards
 report μ̂ = (1/n) Σ yᵢ and treat it as θ, which requires c ≡ 0. Since items
-popular enough to benchmark are popular enough to scrape — and that
-popularity correlates with the skill being measured — c ⊥̸ y\*: textbook
+popular enough to benchmark are popular enough to scrape, and that
+popularity correlates with the skill being measured, c ⊥̸ y\*: textbook
 confounding, with c unobservable. θ is partially identified; the honest
 report is its identified set. (Full formalism: THEORY.md §1–2.)
 
 ## 4. The contamination sensitivity model
 
-**CSM(Λ, π)** (one-sided core): (A1) 0 ≤ yᵢ − y\*ᵢ ≤ cᵢ·Λ·(1 − y\*ᵢ) —
+**CSM(Λ, π)** (one-sided core): (A1) 0 ≤ yᵢ − y\*ᵢ ≤ cᵢ·Λ·(1 − y\*ᵢ):
 leakage closes at most a fraction Λ of an item's headroom; (A2) mean(c) ≤ π.
 Λ = 1 is full memorization; both extremes are *observed* in our experiments
 (§7).
@@ -189,22 +195,22 @@ intervals nest here).
 **Regimes.** Continuous or repeated-measure per-item scores (R1) admit the
 sharp knapsack. Single-draw binary scores (R2) do **not**: dᵢ(0)=dᵢ(1)=0
 for all Λ<1 with a jump at Λ=1, so the sharp machinery is vacuous-with-a-
-discontinuity — it reports "only total memorization flips this claim" —
+discontinuity (it reports "only total memorization flips this claim"),
 and the honest bound is the simple population bound with width πΛ, where
 (Λ, π) are identified only through their product. The library auto-detects
 the regime; richer measurement *strictly sharpens identification*, a design
 lever we quantify in §10.
 
 **Empirically forced extensions** (each falsifiable, each measured in §7):
-**U1 two-sided** — leakage can hurt (stale memorization, post-training
+**U1 two-sided**: leakage can hurt (stale memorization, post-training
 interference [2601.06103]): −Λ⁻y\*ᵢ ≤ yᵢ−y\*ᵢ; the worst case for A ≻ B
-becomes *A inflated and B deflated*. **U2 grouped** — datasets leak whole;
+becomes *A inflated and B deflated*. **U2 grouped**: datasets leak whole;
 all-or-nothing group budgets, bounded by the fractional knapsack, never
-wider than item-level. **U3 stratified** — post-cutoff items have cᵢ = 0 by
-construction; provenance metadata tightens bounds for free. **U4 spillover**
-— training on leaked items drifts scores on clean items by a bounded ε,
+wider than item-level. **U3 stratified**: post-cutoff items have cᵢ = 0 by
+construction; provenance metadata tightens bounds for free. **U4 spillover**:
+training on leaked items drifts scores on clean items by a bounded ε,
 widening the interval symmetrically; ε is measured by twin runs and shrinks
-with corpus size. **Proposition 3 (bridge)** — bounding the *selection odds*
+with corpus size. **Proposition 3 (bridge)**: bounding the *selection odds*
 of contamination (Rosenbaum-style Γ_sel) interpolates continuously between
 random contamination (bias πd̄) and the adversarial top-k (Γ_sel = ∞): the
 adversarial bound is an endpoint of a classical family, and the endpoints
@@ -224,8 +230,8 @@ form is the **contamination frontier** πΛ(1+ρ) = Δ̂.
 
 Γ\* is to contamination what the E-value is to unmeasured confounding: one
 number per claim, reportable in any results table. *Computing* Γ\* needs
-only the published scores — no corpus, reference model, or reference
-benchmark; *interpreting* it against plausible contamination strength uses
+only the published scores: no corpus, reference model, or reference
+benchmark. *interpreting* it against plausible contamination strength uses
 the shared public calibration table of §8 (or none at all, when the full
 Γ\*(Λ, π) curve is reported). Per-model clean-score intervals are reported
 at the parameter level via Imbens–Manski (2004), with set-level intervals
@@ -241,7 +247,7 @@ valid. Empirically the RMSE slope is −0.518 against the theoretical −0.5,
 with bias ≤ 0.0025 from n = 100 to 25,600.
 
 **Finite draws (E9).** With m draws per item, the plug-in knapsack carries
-two *opposing* biases — Jensen smoothing (d is concave: a minimum of two
+two *opposing* biases: Jensen smoothing (d is concave: a minimum of two
 linear functions) versus selection-on-noise. Measured: −40% at m = 2,
 crossing to +4% at m = 10, < 1% by m = 50. Joint sampling⊕identification
 intervals maintain ≥ 99.3% coverage throughout; the simple bound, immune to
@@ -255,7 +261,7 @@ Benjamini–Hochberg across the corpus yields **FDR-certified robustness**
 
 ## 7. Ground-truth validation with emergent contamination
 
-Formula-injected validation is circular — the injection satisfies A1 by
+Formula-injected validation is circular: the injection satisfies A1 by
 construction. We therefore train **clean/contaminated twins** where a
 fraction π of test items (with realized labels, repeated `dose` times) is
 planted in the training corpus and the lift *emerges from real
@@ -266,10 +272,10 @@ Findings. (i) **The channel shape is right**: the 95th-percentile lift
 envelope tracks headroom with correlation +0.91 to +1.00 in 15/15
 configurations. (ii) **Λ is capacity- and dose-stratified**: logistic
 regression Λ̂ ∈ [0.02, 0.23] monotone in dose; MLP ≈ 0.96; random forest
-= 1.00 — the Λ = 1 extreme is real (an interpolating learner), matching the
+= 1.00; the Λ = 1 extreme is real (an interpolating learner), matching the
 dose-response law at LLM scale [2601.04301]. (iii) **Monotonicity fails
 non-trivially**: up to 27% of leaked items score *lower* in the
-contaminated twin — the two-sided channel U1 is necessary. (iv) **Spillover
+contaminated twin; the two-sided channel U1 is necessary. (iv) **Spillover
 is real at small scale**: clean-item drift up to 0.20 (MLP) broke naive
 coverage (1/3); with the calibrated ε-widening, coverage is **3/3 in every
 previously failing configuration**. Injected-contamination coverage under
@@ -281,28 +287,53 @@ model's winning claim (Γ\* = 0.173 vs ≥ 0.29 for clean claims).
 **At LLM scale** (same-family Qwen2.5-0.5B/1.5B pair, 905 MMLU items,
 fp32 LoRA injection, the complete 24-configuration grid over
 π ∈ {0.05…0.5} × dose ∈ {1, 4, 16}): the grid reveals a **dose law**. A
-single exposure to test items is *net-harmful* — mean lift is negative in
+single exposure to test items is *net-harmful*: mean lift is negative in
 7 of 8 dose-1 configurations (down to −2.9 pt) with individual-item
-violation rates of 31–56% — while dose 16 is complete memorization
+violation rates of 31–56%, while dose 16 is complete memorization
 (Λ̂ = 1.000 in all eight configurations, with lifts up to +56 pt). The two-sided channel is therefore the
 *dominant* behavior of light contamination, not a correction term. The
 capacity comparison vindicates the headroom parametrization itself: raw
 lift anti-orders with capacity (the 0.5B model gains more points, purely
-from headroom), while Λ restores the correct ordering — raw clean/dirty
+from headroom), while Λ restores the correct ordering: raw clean/dirty
 gaps mislead across models. Spillover grows with dose (0.04 → 0.30,
 always positive: format familiarity), and all three (of 24) cross-config
-consistency failures occur exactly where λ̂ was pooled across doses —
+consistency failures occur exactly where λ̂ was pooled across doses,
 direct evidence for the dose-stratified calibration the pre-registration
-mandates. Measured Λ̂ remains the concentrated-exposure ceiling above the
-field range [0.1, 0.45]. [PENDING: the corpus-mixed injection
-interpolating concentrated and diluted exposure.]
+mandates.
+
+**Corpus dilution (Fig. 3 / f19).** The grid measures Λ under concentrated
+exposure (every training token is a leaked item), which is a ceiling, not
+the pretraining regime. The corpus-mix experiment holds the model, π, and
+per-item exposure count fixed and interleaves each leaked chunk with
+mix ∈ {0, 4, 20} neutral wikitext chunks, so total training grows with mix
+while leaked exposures do not, which is the direction in which real pretraining
+differs from our grid. Dilution turns out not to be one thing. At **dose 1**
+(a single exposure per item, the scraped-pretraining scenario), Λ̂_q95
+falls from 0.58 through 0.38 to 0.35, from above the calibrated field
+range [0.10, 0.45] to *inside* it. The literature-derived range of §8,
+until now an external prior, is here reproduced by direct interpolation:
+single-shot contamination embedded in a corpus lands at field strength. At
+**dose 4**, dilution runs the other way: Λ̂_q95 climbs from 0.73 to 0.98,
+lift triples, and violations collapse from 0.18 to 0.03. Interleaving
+neutral text between repeated exposures is spaced rather than massed
+practice, and it *consolidates* memorization. Deliberate or repeated
+contamination (a benchmark recurring in a fine-tuning mix) saturates
+toward Λ = 1 no matter how diluted the corpus. Both movements dwarf the
+measured session-reproduction noise (≤ 0.039 on Λ̂_q95, from re-running
+identical configs on fresh GPU sessions; the clean-twin scores and
+contamination indices reproduce exactly). The practical consequences:
+the field range is *validated* for accidental scrape-style contamination,
+and the concentrated "measured-ceiling" policy of §8 is *necessary*:
+repeated-exposure contamination exceeds even the concentrated ceiling, so
+no single Λ constant can cover both regimes. Calibration must be
+dose-stratified, exactly as the pre-registration required.
 
 ## 8. Calibrating Λ from the literature
 
 Published clean/dirty comparisons convert directly to Λ = lift/headroom:
 LLaMA-70B HellaSwag 15.3pt gap on 36.5pt headroom → Λ ≈ 0.42; GPT-3 SQuAD
 ≈ 0.40; Llama-3 flagged-subset estimates ≈ 0.40–0.47 (upper bounds by
-design); GSM8K clean-mirror ≈ 0.21; C-Eval ≈ 0.31; MMLU ≈ 0.02 — strongly
+design); GSM8K clean-mirror ≈ 0.21; C-Eval ≈ 0.31; MMLU ≈ 0.02. The pattern is strongly
 task-heterogeneous, with a meta-analytic central range **[0.1, 0.45]**
 (eighteen sourced rows in `results/lambda_priors.csv`, of which eight are
 quality-eligible for the pooled median under the pre-registered policy of
@@ -316,17 +347,17 @@ measurements enter the same table. The confirmatory audit interprets every
 **TSFM transfer atlas** (6 frozen models × 17 datasets, continuous
 MASE-skill, sharp regime, provenance strata from the corpus's own
 contamination-prior annotations): **every adjacent ranking claim is
-fragile** — Γ\* ≤ 0.114 at π = 0.1, at or below the calibrated range —
+fragile** (Γ\* ≤ 0.114 at π = 0.1, at or below the calibrated range),
 and stratification cannot rescue margins of ≤ 1.3 skill points because
 14/17 datasets carry a high contamination prior.
 
 **Open LLM Leaderboard, ARC-Challenge** (1,170 paired items × 4 models,
 single-draw binary → auto simple regime, n_boot = 500): Llama-3-8B ≻
-Mistral-7B (margin 0.26pt) has Γ\* = 0.026 — a whisker of contamination
+Mistral-7B (margin 0.26pt) has Γ\* = 0.026: a whisker of contamination
 flips it; Mistral-7B ≻ Llama-2-13B (1.9pt) has Γ\* = 0.188, inside the
 calibrated range; **Llama-2-13B ≻ Llama-2-7B (5.0pt) has Γ\* = 0.504,
 above the entire calibrated range, and is FDR-certified robust
-(p = 0.006)** — precisely the claim that independent scaling evidence says
+(p = 0.006)**, precisely the claim that independent scaling evidence says
 should survive. The instrument separates the claim population exactly as
 designed.
 
@@ -343,13 +374,13 @@ falcon-7b was dropped on ARC (its snapshot's item template shares no items
 with the 15-model modal universe) and GPT-J on Winogrande (malformed score
 column).
 
-**Result (Fig. 1 / f17): 49 of 58 claims — 84.5% — are not
+**Result (Fig. 1 / f17): 49 of 58 claims (84.5%) are not
 contamination-robust** (exact two-sided 95% CI [72.6%, 92.7%]; one-sided
 p = 2.7×10⁻²¹ against the pre-registered H4 threshold of 25%; excluding
 pilot-overlap pairs: 47/56 = 83.9%, CI [71.7%, 92.4%]). The ρ = 0.2
 sensitivity leaves the count unchanged. Per task, the median Γ\*(0.1) is
-0.084–0.120 on HellaSwag, Winogrande, and ARC — the typical adjacent claim
-tolerates less than one-third of the calibrated contamination strength —
+0.084–0.120 on HellaSwag, Winogrande, and ARC (the typical adjacent claim
+tolerates less than one-third of the calibrated contamination strength),
 and 0.212 on GSM8K, whose margins are larger. Only **8 claims earn
 BH-FDR robustness certificates (6 under BY)**, and every certified claim
 has a margin above 5 points: cross-generation capability gaps
@@ -363,7 +394,7 @@ The protocol was pre-registered on the Open Science Framework
 publicised. The registration carries the protocol verbatim, the frozen Λ
 calibration table (`lambda_priors.csv`, git blob `590d295…`), and a
 chain-of-custody addendum recording exactly which files were frozen at tag
-`prereg-freeze-v1.0` (commit `ca7773b`) and which were written afterwards —
+`prereg-freeze-v1.0` (commit `ca7773b`) and which were written afterwards,
 including the driver script, the item-universe amendment, and a post-freeze
 correction to a confidence-interval *report* that left every estimate
 unchanged. A mirror is archived independently at the Internet Archive
@@ -409,7 +440,7 @@ prescription that benchmarks publish repeated draws.
 
 **Third, the reduction is what makes the result auditable.** Because the rule
 is transparent, a sceptical reader can re-derive every classification from
-the published margins without trusting our code — and can immediately see
+the published margins without trusting our code, and can immediately see
 what would change it.
 
 **Sensitivity to the frozen constant (Fig. 2 / f18).** Since the decision
@@ -419,7 +450,7 @@ claims is 44.8% at Λ = 0.10, 70.7% at 0.20, 82.8% at 0.30, 84.5% at the
 frozen 0.355, and is flat at 84.5% throughout Λ ∈ [0.355, 0.50]. H4 clears
 its 25% bar for **every Λ ≥ 0.055** and is significant at α = 0.05 for every
 Λ ≥ 0.080. For the headline to fail, true contamination strength would have
-to sit below Λ ≈ 0.055 — beneath the floor of the calibrated field range
+to sit below Λ ≈ 0.055: beneath the floor of the calibrated field range
 [0.10, 0.45], below seven of the eight quality-eligible estimates, and an
 order of magnitude below the concentrated-exposure ceiling we measured
 directly (§7). The qualitative finding survives any calibration a reviewer
@@ -431,8 +462,8 @@ Adjacent pairs are *selected* to have the smallest margins in a ranking, so
 the objection writes itself: 84.5% may be induced by the claim-selection
 rule rather than by contamination sensitivity. We take the objection
 seriously enough to measure it. Applying the identical frozen rule to **all
-450 model pairs** across the four tasks — the full comparison set, no
-selection — gives 30.4% non-robust. Stratifying by rank gap:
+450 model pairs** across the four tasks (the full comparison set, no
+selection) gives 30.4% non-robust. Stratifying by rank gap:
 
 | rank gap | non-robust | median margin |
 |---|---|---|
@@ -462,7 +493,7 @@ survive. Neither number is the headline alone; the gradient is.
 
 **What would change our mind.** The finding is falsifiable on three fronts,
 pre-specified in the registration. (i) If contamination-induced lift in the
-wild were measured at Λ < 0.055 for these benchmarks, H4 would fail — this
+wild were measured at Λ < 0.055 for these benchmarks, H4 would fail; that
 is a single well-designed injection study away, and we would report it. (ii)
 If the A1 bounded-headroom envelope were rejected at calibrated Λ, the audit
 would be re-run under the full-memorization channel and both reported. (iii)
@@ -475,7 +506,7 @@ could run against us.
 
 Two quantified prescriptions for benchmark builders. **Freshness:** at a
 3-point margin, raising the post-cutoff item fraction from 0 to 90% lifts
-Γ\* from 0.168 to 0.453 — from fragile-everywhere to robust across the
+Γ\* from 0.168 to 0.453, from fragile-everywhere to robust across the
 calibrated range. Dating your items is not hygiene; it is identification.
 **Repeated draws:** at m = 20 draws the sharp bound certifies Γ\* = 0.172
 versus 0.154 for the simple bound (~12% more certified robustness), and
@@ -484,14 +515,18 @@ item is what entitles a benchmark to sharp identification.
 
 ## 11. Limitations and threats to validity
 
-(1) A1's channel shape is now validated with real memorization at both
-small scale and LLM scale (§7), but the LLM measurement is
-concentrated-exposure; the corpus-diluted regime that matches pretraining
-is bracketed (field priors below, measured ceiling above), not yet
-interpolated — the corpus-mixed injection is the outstanding experiment. (2) In the single-draw binary
+(1) A1's channel shape is validated with real memorization at small scale,
+LLM scale, and now under corpus dilution (§7); the remaining gap is scale
+itself: our largest injection model is 1.5B parameters and the dilution
+sweep covers one model, one π, and a single seed per configuration
+(session-reproduction noise is measured at ≤ 0.039 on Λ̂_q95, well below
+the effects reported, but a multi-seed replication would still tighten
+it). The dose-1 dilution result lands inside the field range; whether
+that interpolation holds at 70B-scale pretraining is an extrapolation we
+flag, not a measurement we own. (2) In the single-draw binary
 regime (most current leaderboards), (Λ, π) enter only through their
 product; the 2-D frontier earns its second dimension only under repeated
-draws or provenance strata — we say so plainly, and §10 is the constructive
+draws or provenance strata; we say so plainly, and §10 is the constructive
 answer. (3) Λ calibration from pre/post-cutoff comparisons can be
 confounded by temporal drift; the pre-registration pairs items on
 difficulty and reports calibration uncertainty. (4) Both case studies are

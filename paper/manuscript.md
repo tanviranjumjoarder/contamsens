@@ -45,10 +45,17 @@ claims across 16 models and four Open LLM Leaderboard benchmarks,
 **84.5% of claims are not contamination-robust** at the frozen calibration
 (exact 95% CI [72.6%, 92.7%]; one-sided p = 2.7×10⁻²¹ against the
 pre-registered 25% threshold), and only 8 claims — all with margins above
-5 points — earn FDR-controlled robustness certificates. Sensitivity
-analysis converts an unanswerable question — *is the benchmark
-contaminated?* — into an answerable one, with a one-number reporting
-standard any leaderboard can adopt.
+5 points — earn FDR-controlled robustness certificates. The finding is not
+an artifact of the frozen constant: sweeping contamination strength across
+its whole plausible range leaves the conclusion intact, and the hypothesis
+clears its pre-registered bar for every Λ ≥ 0.055 — beneath the floor of the
+calibrated field range. In the single-draw binary regime the rule provably
+reduces to a *calibrated margin threshold*; we show why deriving that
+threshold, rather than asserting one, is the contribution, and where richer
+data makes the machinery bind strictly tighter. Sensitivity analysis
+converts an unanswerable question — *is the benchmark contaminated?* — into
+an answerable one, with a one-number reporting standard any leaderboard can
+adopt.
 
 **Keywords:** benchmark contamination; partial identification; sensitivity
 analysis; evaluation methodology; leaderboards; Rosenbaum bounds.
@@ -129,7 +136,7 @@ methods and document their fragile assumptions [2404.00699; 2410.18966;
 2406.04244]. Magar & Schwartz [2022] introduced controlled-injection
 quantification (memorization vs exploitation); dose-response studies show
 lift grows with capacity and shrinks with unique-corpus size [2601.04301];
-post-training can *reverse* lift [2601.06103]. ConStat [dekoninck et al.,
+post-training can *reverse* lift [2601.06103]. ConStat [Dekoninck et al.,
 NeurIPS 2024] is the strongest performance-only method: a statistical test
 and effect estimate requiring reference benchmarks and reference models
 assumed clean. CapBencher [2505.18102] builds overfitting alarms into new
@@ -361,6 +368,72 @@ unchanged. A mirror is archived independently at the Internet Archive
 (`osf-registrations-2436z-v1`), giving a second timestamp not under author
 control.
 
+### 9.2 What the audit reduces to, and why that is the point
+
+A reader who works through §5 will notice something the headline conceals,
+so we state it ourselves. In the single-draw binary regime the simple bound
+gives Γ\*(π) = Δ̂ / (π(1+ρ)). The pre-registered rule "non-robust iff
+Γ\*(0.1) < Λ_ref" is therefore *algebraically identical* to
+
+> Δ̂ < π · Λ_ref = 0.0355 (0.042 on HellaSwag),
+
+a threshold on the raw margin. We verified this holds for all 58 claims. The
+confirmatory audit could have been executed with a ruler.
+
+This is not a defect; it is the result. Three points follow.
+
+**First, the arithmetic was never the hard part.** Anyone can declare that
+gaps below three-and-a-half points are untrustworthy. The question is *which*
+threshold is defensible, and that is a measurement problem, not an arithmetic
+one. Our threshold is not chosen for convenience: it is π times the median of
+eight quality-filtered estimates of contamination-induced lift, converted to
+a common headroom parametrisation (§8), frozen before unblinding, and
+attached to a third-party timestamp. The contribution is the derivation of
+0.0355 from contamination evidence, not the comparison against it. Strip out
+the theory and you have a number nobody can justify; strip out the arithmetic
+and you have lost nothing.
+
+**Second, the reduction is a property of the regime, not of the method.**
+Γ\* collapses to Δ̂/π only when items are binary and measured once, because
+the per-item deflation capacity degenerates (Lemma A.1): d(0) = d(1) = 0 for
+every Λ < 1. That is a statement about how impoverished single-draw
+accuracy data is, and it is worth hearing. Where richer data exists the
+machinery genuinely separates: with continuous per-item scores the sharp
+knapsack binds strictly tighter than πΛ (§9, TSFM atlas), and at m = 20
+repeated draws it certifies Γ\* = 0.172 against the simple bound's 0.154
+(§10). The leaderboards audited here publish the weakest data they could;
+the reduction is the price of that, and it is the argument for §10's
+prescription that benchmarks publish repeated draws.
+
+**Third, the reduction is what makes the result auditable.** Because the rule
+is transparent, a sceptical reader can re-derive every classification from
+the published margins without trusting our code — and can immediately see
+what would change it.
+
+**Sensitivity to the frozen constant (Fig. 2 / f18).** Since the decision
+depends on π and Λ only through their product, the entire (π, Λ) plane
+collapses to a single curve, which we sweep. The fraction of non-robust
+claims is 44.8% at Λ = 0.10, 70.7% at 0.20, 82.8% at 0.30, 84.5% at the
+frozen 0.355, and is flat at 84.5% throughout Λ ∈ [0.355, 0.50]. H4 clears
+its 25% bar for **every Λ ≥ 0.055** and is significant at α = 0.05 for every
+Λ ≥ 0.080. For the headline to fail, true contamination strength would have
+to sit below Λ ≈ 0.055 — beneath the floor of the calibrated field range
+[0.10, 0.45], below seven of the eight quality-eligible estimates, and an
+order of magnitude below the concentrated-exposure ceiling we measured
+directly (§7). The qualitative finding survives any calibration a reviewer
+could reasonably substitute; only the exact percentage moves.
+
+**What would change our mind.** The finding is falsifiable on three fronts,
+pre-specified in the registration. (i) If contamination-induced lift in the
+wild were measured at Λ < 0.055 for these benchmarks, H4 would fail — this
+is a single well-designed injection study away, and we would report it. (ii)
+If the A1 bounded-headroom envelope were rejected at calibrated Λ, the audit
+would be re-run under the full-memorization channel and both reported. (iii)
+If per-item records for these leaderboards proved systematically unusable,
+the corpus falls back to continuous-score data and the substitution is
+disclosed. None of these is a hypothetical hedge; each is a study someone
+could run against us.
+
 ## 10. Design sensitivity: what buys robustness
 
 Two quantified prescriptions for benchmark builders. **Freshness:** at a
@@ -416,21 +489,44 @@ with it, not silently absorbed.
 
 ## References
 
-*(Verified links; to be converted to formal citations at submission.)*
-Rosenbaum (1987), Observational Studies sensitivity bounds · Tan (2006)
-JASA marginal sensitivity model · VanderWeele & Ding (2017) Annals of
-Internal Medicine, E-values · Chernozhukov et al., omitted variable bias in
-causal ML — arXiv:2112.13398 · Magar & Schwartz (ACL 2022) —
-arXiv:2203.08242 · Touvron et al. (2023) — arXiv:2302.13971 · Llama 3
-(2024) — arXiv:2407.21783 · Brown et al. (2020) — arXiv:2005.14165 ·
-ConStat (NeurIPS 2024) — arXiv:2405.16281 · CapBencher — arXiv:2505.18102 ·
-Contamination-detection surveys — arXiv:2404.00699, 2410.18966, 2406.04244 ·
-TSFM leakage — arXiv:2510.13654, 2605.26161 · Dose-response —
-arXiv:2601.04301 · Post-training contamination — arXiv:2601.06103 ·
-Inference-time decontamination — arXiv:2601.19334 · Open-source
-contamination report — arXiv:2310.17589 · Rank intervals — arXiv:2606.08679
-· Leaderboard perturbation/social choice — arXiv:2605.15761, 2605.23628,
-2402.01781 · tinyBenchmarks — arXiv:2402.14992 · IRT leaderboards —
-arXiv:2501.17200 · Construct validity — arXiv:2511.04703, 2510.23191,
-2604.03244 · Generalized Rosenbaum — arXiv:2403.14152 · Time-varying
-E-values — arXiv:2602.24261 · KDS — arXiv:2502.00678.
+*Generated by `scripts/make_bibliography.py`; every arXiv entry was
+fetched live from the arXiv API. BibTeX: `paper/references.bib`.*
+
+- Tom B. Brown et al. (2020). *Language Models are Few-Shot Learners.* arXiv:2005.14165. `[brown2020gpt3]`
+- Victor Chernozhukov et al. (2021). *Long Story Short: Omitted Variable Bias in Causal Machine Learning.* arXiv:2112.13398. `[chernozhukov2021ovb]`
+- Inbal Magar and Roy Schwartz (2022). *Data Contamination: From Memorization to Exploitation.* arXiv:2203.08242. `[magar2022contamination]`
+- Hugo Touvron et al. (2023). *LLaMA: Open and Efficient Foundation Language Models.* arXiv:2302.13971. `[touvron2023llama]`
+- Yucheng Li et al. (2023). *An Open Source Data Contamination Report for Large Language Models.* arXiv:2310.17589. `[li2023contamreport]`
+- Aaron Grattafiori et al. (2024). *The Llama 3 Herd of Models.* arXiv:2407.21783. `[grattafiori2024llama3]`
+- Cheng Xu et al. (2024). *Benchmark Data Contamination of Large Language Models: A Survey.* arXiv:2406.04244. `[xu2024survey]`
+- Felipe Maia Polo et al. (2024). *tinyBenchmarks: evaluating LLMs with fewer examples.* arXiv:2402.14992. `[polo2024tinybenchmarks]`
+- Jasper Dekoninck et al. (2024). *ConStat: Performance-Based Contamination Detection in Large Language Models.* arXiv:2405.16281. `[dekoninck2024constat]`
+- Mathieu Ravaut et al. (2024). *A Comprehensive Survey of Contamination Detection Methods in Large Language Models.* arXiv:2404.00699. `[ravaut2024survey]`
+- Norah Alzahrani et al. (2024). *When Benchmarks are Targets: Revealing the Sensitivity of Large Language Model Leaderboards.* arXiv:2402.01781. `[alzahrani2024benchmarks]`
+- Siyu Heng et al. (2024). *Towards Robust Matched Observational Studies with General Treatment Types: Consistency, Efficiency, and Adaptivity.* arXiv:2403.14152. `[heng2024robust]`
+- Yujuan Fu et al. (2024). *Does Data Contamination Detection Work (Well) for LLMs? A Survey and Evaluation on Detection Assumptions.* arXiv:2410.18966. `[fu2024doescontam]`
+- Andrew M. Bean et al. (2025). *Measuring what Matters: Construct Validity in Large Language Model Benchmarks.* arXiv:2511.04703. `[bean2025construct]`
+- Denis Federiakin (2025). *Improving LLM Leaderboards with Psychometrical Methodology.* arXiv:2501.17200. `[federiakin2025psychometric]`
+- Hyeong Kyu Choi et al. (2025). *How Contaminated Is Your Benchmark? Quantifying Dataset Leakage in Large Language Models with Kernel Divergence.* arXiv:2502.00678. `[choi2025kds]`
+- Marcel Meyer et al. (2025). *Rethinking Evaluation in the Era of Time Series Foundation Models: (Un)known Information Leakage Challenges.* arXiv:2510.13654. `[meyer2025tsfm]`
+- Takashi Ishida et al. (2025). *CapBencher: Give Your LLM Benchmark a Built-in Alarm for Test-Set Overfitting.* arXiv:2505.18102. `[ishida2025capbencher]`
+- Timo Freiesleben and Sebastian Zezulka (2025). *The Benchmarking Epistemology: Construct Validity for Evaluating Machine Learning Models.* arXiv:2510.23191. `[freiesleben2025epistemology]`
+- Bitya Neuhof and Yuval Benjamini (2026). *Rank Intervals for Leaderboards: A Hierarchical Framework for Model Evaluation.* arXiv:2606.08679. `[neuhof2026rankintervals]`
+- Han Jiang et al. (2026). *AI Evaluation Should Require Standardized Item-Level Data Releases.* arXiv:2604.03244. `[jiang2026itemlevel]`
+- Hongkai Li et al. (2026). *TSFMAudit: Data Contamination Auditing in Forecasting Time Series Foundation Models.* arXiv:2605.26161. `[li2026tsfmaudit]`
+- Hosna Oyarhoseini et al. (2026). *A Unified Perturbation Framework for Analyzing Leaderboard Stability and Manipulation.* arXiv:2605.15761. `[oyarhoseini2026perturbation]`
+- Jianzhe Chai et al. (2026). *When Benchmarks Leak: Inference-Time Decontamination for LLMs.* arXiv:2601.19334. `[chai2026inferencetime]`
+- Md. Niamul Islam Sium (2026). *Quantifying Robustness to Unmeasured Confounding in Time-Varying Treatment Confounder Settings: An Extension of E-value Approach.* arXiv:2602.24261. `[sium2026timevarying]`
+- Muhammed Yusuf Kocyigit and Caglar Yildirim (2026). *The Impact of Post-training on Data Contamination.* arXiv:2601.06103. `[kocyigit2026posttraining]`
+- Polina Gordienko et al. (2026). *How Hard is it to Rig a Benchmark? A Social Choice Analysis of Leaderboard Robustness.* arXiv:2605.23628. `[gordienko2026socialchoice]`
+- Rylan Schaeffer et al. (2026). *Quantifying the Effect of Test Set Contamination on Generative Evaluations.* arXiv:2601.04301. `[schaeffer2026quantifying]`
+
+Classical statistics references (transcribed; verify against the
+publisher record before submission):
+
+- Rosenbaum, P. R. (1987). *Sensitivity analysis for certain permutation inferences in matched observational studies.* Biometrika 74(1), 13–26. `[rosenbaum1987sensitivity]`
+- Tan, Z. (2006). *A distributional approach for causal inference using propensity scores.* JASA 101(476), 1619–1637. `[tan2006distributional]`
+- VanderWeele, T. J. and Ding, P. (2017). *Sensitivity analysis in observational research: introducing the E-value.* Annals of Internal Medicine 167(4), 268–274. `[vanderweele2017evalue]`
+- Imbens, G. W. and Manski, C. F. (2004). *Confidence intervals for partially identified parameters.* Econometrica 72(6), 1845–1857. `[imbens2004confidence]`
+- Benjamini, Y. and Hochberg, Y. (1995). *Controlling the false discovery rate.* JRSS-B 57(1), 289–300. `[benjamini1995controlling]`
+- Benjamini, Y. and Yekutieli, D. (2001). *The control of the false discovery rate in multiple testing under dependency.* Annals of Statistics 29(4), 1165–1188. `[benjamini2001control]`

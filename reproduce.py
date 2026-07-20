@@ -23,6 +23,9 @@ FAST_STEPS = [
     ("P0 validation + gate", [sys.executable, "experiments/run_validation.py"]),
     ("P1 estimation theory", [sys.executable, "experiments/run_p1_theory.py"]),
     ("P5 design sensitivity", [sys.executable, "experiments/run_p5_design.py"]),
+    # Reads the committed confirmatory_audit.csv; no network, no GPU.
+    ("Lambda_ref sensitivity (f18)",
+     [sys.executable, "scripts/run_lambda_sensitivity.py"]),
 ]
 PILOT_STEP = ("P4 pilot (atlas)", [sys.executable, "experiments/run_p4_pilot_atlas.py"])
 LORA_STEP = ("P2c LoRA analysis", [sys.executable, "experiments/run_p2c_lora_analysis.py"])

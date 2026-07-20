@@ -1,0 +1,26 @@
+IS THE HEADLINE AN ARTIFACT OF AUDITING ADJACENT PAIRS?
+================================================================
+Same frozen rule (non-robust iff margin < pi*Lambda_ref, pi=0.1).
+
+ADJACENT pairs only : 49/58 = 84.5% non-robust
+ALL pairs           : 137/450 = 30.4% non-robust
+
+By rank gap (gap 1 = adjacent):
+    gap 1 :  49/ 58 =  84.5% non-robust   (median margin 0.011)
+    gap 2 :  39/ 54 =  72.2% non-robust   (median margin 0.023)
+    gap 3 :  28/ 50 =  56.0% non-robust   (median margin 0.033)
+    gap 4 :  16/ 46 =  34.8% non-robust   (median margin 0.046)
+    gap 5 :   5/ 42 =  11.9% non-robust   (median margin 0.054)
+    gap 6 :   0/ 38 =   0.0% non-robust   (median margin 0.068)
+    gap 7 :   0/ 34 =   0.0% non-robust   (median margin 0.078)
+    gap 8 :   0/ 30 =   0.0% non-robust   (median margin 0.093)
+
+Distant pairs (rank gap >= 5): 5/242 = 2.1% non-robust
+
+Reading: adjacency IS a selection on small margins, and the
+all-pairs rate is necessarily lower. The scientific claim is not
+that most model COMPARISONS are fragile -- distant pairs are mostly
+robust, which is the 'ordering of eras' finding -- but that the
+comparisons a leaderboard actually invites, between neighbouring
+entries, are the fragile ones. Both numbers are reported so the
+selection is explicit rather than buried.

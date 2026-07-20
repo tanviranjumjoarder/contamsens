@@ -304,7 +304,9 @@ LLaMA-70B HellaSwag 15.3pt gap on 36.5pt headroom → Λ ≈ 0.42; GPT-3 SQuAD
 ≈ 0.40; Llama-3 flagged-subset estimates ≈ 0.40–0.47 (upper bounds by
 design); GSM8K clean-mirror ≈ 0.21; C-Eval ≈ 0.31; MMLU ≈ 0.02 — strongly
 task-heterogeneous, with a meta-analytic central range **[0.1, 0.45]**
-(twelve sourced rows in `results/lambda_priors.csv`). Λ is model-stratified
+(eighteen sourced rows in `results/lambda_priors.csv`, of which eight are
+quality-eligible for the pooled median under the pre-registered policy of
+§9.1; `measured` rows enter only as upper-bound anchors). Λ is model-stratified
 per the dose-response law; ConStat effect estimates and our own CONTAM-CTRL
 measurements enter the same table. The confirmatory audit interprets every
 Γ\* against this pre-frozen range (PREREGISTRATION.md).
@@ -422,6 +424,41 @@ to sit below Λ ≈ 0.055 — beneath the floor of the calibrated field range
 order of magnitude below the concentrated-exposure ceiling we measured
 directly (§7). The qualitative finding survives any calibration a reviewer
 could reasonably substitute; only the exact percentage moves.
+
+### 9.3 Is the headline an artifact of auditing adjacent pairs?
+
+Adjacent pairs are *selected* to have the smallest margins in a ranking, so
+the objection writes itself: 84.5% may be induced by the claim-selection
+rule rather than by contamination sensitivity. We take the objection
+seriously enough to measure it. Applying the identical frozen rule to **all
+450 model pairs** across the four tasks — the full comparison set, no
+selection — gives 30.4% non-robust. Stratifying by rank gap:
+
+| rank gap | non-robust | median margin |
+|---|---|---|
+| 1 (adjacent) | 49/58 = **84.5%** | 0.011 |
+| 2 | 39/54 = 72.2% | 0.023 |
+| 3 | 28/50 = 56.0% | 0.033 |
+| 4 | 16/46 = 34.8% | 0.046 |
+| 5 | 5/42 = 11.9% | 0.054 |
+| ≥ 6 | 0/102 = **0.0%** | ≥ 0.068 |
+
+The objection is correct that adjacency selects small margins — and the
+gradient it produces is the cleanest quantitative statement of our thesis
+that the paper contains. Robustness is not uniformly absent: it is a
+monotone function of how far apart two models sit. Comparisons across five
+or more rank positions are essentially all robust (2.1% non-robust at gap
+≥ 5); comparisons between neighbours are essentially all fragile. That is
+precisely "the ordering of eras is contamination-robust, the ordering of
+neighbours is not," now with a dose-response curve behind it.
+
+We therefore report both numbers, and are explicit about which claim each
+supports. The 30.4% all-pairs figure is the answer to "how often does
+contamination sensitivity matter across arbitrary model comparisons." The
+84.5% adjacent figure is the answer to the question a leaderboard actually
+poses, because a leaderboard is an ordering: it invites the reader to
+compare entry k with entry k+1, and those are the comparisons that do not
+survive. Neither number is the headline alone; the gradient is.
 
 **What would change our mind.** The finding is falsifiable on three fronts,
 pre-specified in the registration. (i) If contamination-induced lift in the

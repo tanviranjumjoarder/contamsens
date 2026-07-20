@@ -21,3 +21,17 @@ keywords:
   - sensitivity analysis
   - evaluation methodology
 license: MIT
+references:
+  - type: report
+    title: >-
+      Pre-registration: Confirmatory Contamination Re-Audit of Open LLM
+      Leaderboard Claims (contamsens Phase 4)
+    authors:
+      - family-names: Joarder
+        given-names: Tanvir Anjum
+    doi: 10.17605/OSF.IO/2436Z
+    url: "https://osf.io/2436z"
+    year: 2026
+    month: 7
+    institution:
+      name: "Open Science Framework"

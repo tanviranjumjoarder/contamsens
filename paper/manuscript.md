@@ -346,8 +346,20 @@ BH-FDR robustness certificates (6 under BY)**, and every certified claim
 has a margin above 5 points: cross-generation capability gaps
 (e.g. Llama-3-70B ≻ Qwen1.5-14B on GSM8K) and "everything beats GPT-J."
 The leaderboard's *ordering of eras* is contamination-robust; its
-*ordering of neighbors* is not. [OSF timestamp pending author filing —
-OSF_FILING.md; results labeled per protocol until then.]
+*ordering of neighbors* is not.
+
+The protocol was pre-registered on the Open Science Framework
+(<https://osf.io/2436z>, DOI `10.17605/OSF.IO/2436Z`, registered 20 July
+2026, public and un-embargoed) before any confirmatory number was
+publicised. The registration carries the protocol verbatim, the frozen Λ
+calibration table (`lambda_priors.csv`, git blob `590d295…`), and a
+chain-of-custody addendum recording exactly which files were frozen at tag
+`prereg-freeze-v1.0` (commit `ca7773b`) and which were written afterwards —
+including the driver script, the item-universe amendment, and a post-freeze
+correction to a confidence-interval *report* that left every estimate
+unchanged. A mirror is archived independently at the Internet Archive
+(`osf-registrations-2436z-v1`), giving a second timestamp not under author
+control.
 
 ## 10. Design sensitivity: what buys robustness
 
@@ -387,11 +399,20 @@ Imbens–Manski properties, spillover extension) are in Appendix A
 
 ## 12. Reproducibility statement
 
-Seed 42 throughout; exact-version lock (`requirements.txt`); 50 unit tests
+Seed 42 throughout; exact-version lock (`requirements.txt`); 57 unit tests
 including constructive sharpness attainment; `python reproduce.py`
 regenerates every fast number in ~45 s (`--full` adds the twin-training
 grid, ~30 min, CPU); every reported number maps to its generating script in
 PROVENANCE.md; the package installs via `pip install -e .` (v0.2.0, MIT).
+
+The confirmatory analysis (§9.1) was pre-registered at
+<https://osf.io/2436z> (DOI `10.17605/OSF.IO/2436Z`, 20 July 2026), with
+the analysis library and calibration constants frozen beforehand at git tag
+`prereg-freeze-v1.0` (commit `ca7773b`). `PREREGISTRATION.md`, `THEORY.md`,
+and `results/lambda_priors.csv` in the repository are byte-identical to that
+tag and to the copies attached to the registration; deviations and
+post-freeze changes are enumerated in the chain-of-custody addendum filed
+with it, not silently absorbed.
 
 ## References
 

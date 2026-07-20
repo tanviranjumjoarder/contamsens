@@ -1,4 +1,5 @@
-CONFIRMATORY AUDIT — protocol v1.0 (frozen 19 Jul 2026, tag prereg-freeze-v1.0, commit ca7773b); OSF timestamp pending
+CONFIRMATORY AUDIT — protocol v1.0 (frozen 19 Jul 2026, tag prereg-freeze-v1.0, commit ca7773b)
+Pre-registered: https://osf.io/2436z (DOI 10.17605/OSF.IO/2436Z), registered 20 Jul 2026
 ============================================================================
 H4 [all claims]: 49/58 non-robust = 84.5% (two-sided 95% CI [72.6%, 92.7%]); H4 (>=25%) one-sided p = 2.683e-21
 H4 [excl. pilot-overlap]: 47/56 non-robust = 83.9% (two-sided 95% CI [71.7%, 92.4%]); H4 (>=25%) one-sided p = 3.062e-20

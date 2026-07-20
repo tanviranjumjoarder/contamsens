@@ -13,7 +13,8 @@ prereg-freeze-v1.0, commit ca7773b) verbatim:
   H4         >= 25% of claims non-robust (exact binomial CI), reported with
              and without pilot-overlap pairs
 
-Label: protocol v1.0; OSF timestamp pending user filing (OSF_FILING.md).
+Label: protocol v1.0; OSF registration https://osf.io/2436z
+(DOI 10.17605/OSF.IO/2436Z), registered 20 July 2026.
 Outputs -> results/confirmatory_audit.csv, results/confirmatory_summary.txt,
 results/figures/f17_confirmatory.png. Downloads cache -> data/oll_audit/.
 """
@@ -193,7 +194,9 @@ def main() -> None:
     out.to_csv(RESULTS / "confirmatory_audit.csv", index=False)
 
     lines = ["CONFIRMATORY AUDIT — protocol v1.0 (frozen 19 Jul 2026, "
-             "tag prereg-freeze-v1.0, commit ca7773b); OSF timestamp pending",
+             "tag prereg-freeze-v1.0, commit ca7773b)",
+             "Pre-registered: https://osf.io/2436z "
+             "(DOI 10.17605/OSF.IO/2436Z), registered 20 Jul 2026",
              "=" * 76]
     for label, sub in (("all claims", out),
                        ("excl. pilot-overlap", out[~out.pilot_overlap])):

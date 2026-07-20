@@ -14,9 +14,26 @@ calibration table (`results/lambda_priors.csv`: literature clean/dirty gaps plus
 our own injection measurements), shared across all audits rather than built
 per-audit. Reporting the full Γ\*(Λ, π) curve requires no calibration at all.
 
-Status: Phase 0 (formalisation + core library + ground-truth validation). See
-[THEORY.md](THEORY.md) for the formal note and [PROVENANCE.md](PROVENANCE.md) for
-the mapping from every reported number to the script that produced it.
+**Pre-registered confirmatory result.** Applied to the Open LLM Leaderboard v1
+archive under a protocol frozen in advance, **49 of 58 adjacent leaderboard
+claims (84.5%) are not contamination-robust** at the calibrated contamination
+strength (two-sided 95% CI [72.6%, 92.7%]; one-sided *p* = 2.7×10⁻²¹ against the
+pre-registered 25% threshold). Only 8 claims earn FDR-controlled robustness
+certificates, every one of them with a margin above 5 points. The leaderboard's
+*ordering of eras* is contamination-robust; its *ordering of neighbours* is not.
+
+Pre-registration: <https://osf.io/2436z> (DOI `10.17605/OSF.IO/2436Z`, 20 July
+2026), with the analysis library and calibration constants frozen beforehand at
+git tag `prereg-freeze-v1.0` (commit `ca7773b`). `PREREGISTRATION.md`,
+`THEORY.md`, and `results/lambda_priors.csv` are byte-identical to that tag;
+every post-freeze change is enumerated in
+[OSF_ADDENDUM_chain_of_custody.md](OSF_ADDENDUM_chain_of_custody.md).
+
+Status: theory, library (57 tests), ground-truth validation at two scales,
+Λ calibration, and the pre-registered confirmatory audit are complete. See
+[THEORY.md](THEORY.md) for the formal note, [paper/](paper/) for the manuscript
+and proofs appendix, and [PROVENANCE.md](PROVENANCE.md) for the mapping from
+every reported number to the script that produced it.
 
 ---
 

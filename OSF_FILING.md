@@ -1,5 +1,19 @@
 # Filing the pre-registration on OSF — detailed walkthrough
 
+> ## ✅ COMPLETED — 20 July 2026
+>
+> Registration: <https://osf.io/2436z> · DOI `10.17605/OSF.IO/2436Z`
+> Registered 2026-07-20T11:04:07Z · public, un-embargoed, approved.
+> Schema: Open-Ended Registration. Independent mirror:
+> `archive.org/details/osf-registrations-2436z-v1`.
+>
+> The URL and DOI have been propagated to `README.md`, `PROVENANCE.md`,
+> `CITATION.cff`, `paper/manuscript.md` (§9.1 and §12), and
+> `scripts/run_confirmatory_audit.py`. `PREREGISTRATION.md` was deliberately
+> **not** edited — see "Gotchas" below.
+>
+> The procedure below is retained as the record of what was done.
+
 The protocol is frozen (`PREREGISTRATION.md` v1.0, git tag `prereg-freeze-v1.0`).
 Filing on OSF adds an independent third-party timestamp and a DOI — the thing a
 reviewer actually trusts, because it cannot be back-dated by you.

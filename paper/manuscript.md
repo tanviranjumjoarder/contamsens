@@ -3,10 +3,11 @@
 **Tanvir Anjum Joarder**¹
 ¹ Department of Computer Science and Engineering, Rajshahi University of Engineering & Technology, Rajshahi-6204, Bangladesh — `ussash93@gmail.com`
 
-*Draft v0.1 — 17 July 2026. Every number in this draft is regenerable via
-`python reproduce.py` and maps to a script through PROVENANCE.md. Sections
-marked [PENDING] await the pre-registered confirmatory audit and the
-GPU-scale CONTAM-CTRL run.*
+*Draft v0.2 — 20 July 2026. Every number in this draft is regenerable via
+`python reproduce.py` and maps to a script through PROVENANCE.md. The
+pre-registered confirmatory audit (§9.1) and the 24-configuration GPU-scale
+CONTAM-CTRL grid (§7) are complete; the single remaining [PENDING] marker
+awaits the corpus-mixed injection run.*
 
 ---
 

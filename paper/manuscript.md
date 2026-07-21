@@ -544,17 +544,22 @@ Imbens–Manski properties, spillover extension) are in Appendix A
 
 ## 12. Reproducibility statement
 
-Seed 42 throughout; exact-version lock (`requirements.txt`); 57 unit tests
+Code, data artifacts, and this manuscript are public at
+<https://github.com/tanviranjumjoarder/contamsens> (MIT). Seed 42
+throughout; exact-version lock (`requirements.txt`); 57 unit tests
 including constructive sharpness attainment; `python reproduce.py`
-regenerates every fast number in ~45 s (`--full` adds the twin-training
-grid, ~30 min, CPU); every reported number maps to its generating script in
-PROVENANCE.md; the package installs via `pip install -e .` (v0.2.0, MIT).
+regenerates every fast number in under two minutes (`--full` adds the
+twin-training grid, ~30 min, CPU); every reported number maps to its
+generating script in PROVENANCE.md; the package installs via
+`pip install -e .` (v0.2.0).
 
 The confirmatory analysis (§9.1) was pre-registered at
 <https://osf.io/2436z> (DOI `10.17605/OSF.IO/2436Z`, 20 July 2026), with
 the analysis library and calibration constants frozen beforehand at git tag
-`prereg-freeze-v1.0` (commit `ca7773b`). `PREREGISTRATION.md`, `THEORY.md`,
-and `results/lambda_priors.csv` in the repository are byte-identical to that
+`prereg-freeze-v1.0` (commit `ca7773b`, publicly resolvable in the
+repository above, so the freeze is independently checkable rather than
+asserted). `PREREGISTRATION.md`, `THEORY.md`, and
+`results/lambda_priors.csv` in the repository are byte-identical to that
 tag and to the copies attached to the registration; deviations and
 post-freeze changes are enumerated in the chain-of-custody addendum filed
 with it, not silently absorbed.

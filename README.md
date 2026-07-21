@@ -29,8 +29,12 @@ git tag `prereg-freeze-v1.0` (commit `ca7773b`). `PREREGISTRATION.md`,
 every post-freeze change is enumerated in
 [OSF_ADDENDUM_chain_of_custody.md](OSF_ADDENDUM_chain_of_custody.md).
 
-Status: theory, library (57 tests), ground-truth validation at two scales,
-Λ calibration, and the pre-registered confirmatory audit are complete. See
+Status: complete through the full arc — theory, library (57 tests),
+ground-truth validation at two scales, the corpus-dilution experiment,
+Λ calibration, and the pre-registered confirmatory audit. Headline: **49 of
+58 adjacent Open LLM Leaderboard claims (84.5%) are not
+contamination-robust** at the frozen calibration; robustness falls
+monotonically with rank distance (0% non-robust at rank gap ≥ 6). See
 [THEORY.md](THEORY.md) for the formal note, [paper/](paper/) for the manuscript
 and proofs appendix, and [PROVENANCE.md](PROVENANCE.md) for the mapping from
 every reported number to the script that produced it.

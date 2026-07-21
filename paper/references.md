@@ -32,8 +32,8 @@ fetched live from the arXiv API. BibTeX: `paper/references.bib`.*
 - Polina Gordienko et al. (2026). *How Hard is it to Rig a Benchmark? A Social Choice Analysis of Leaderboard Robustness.* arXiv:2605.23628. `[gordienko2026socialchoice]`
 - Rylan Schaeffer et al. (2026). *Quantifying the Effect of Test Set Contamination on Generative Evaluations.* arXiv:2601.04301. `[schaeffer2026quantifying]`
 
-Classical statistics references (transcribed; verify against the
-publisher record before submission):
+Classical statistics references (verified against publisher
+records, 21 July 2026):
 
 - Rosenbaum, P. R. (1987). *Sensitivity analysis for certain permutation inferences in matched observational studies.* Biometrika 74(1), 13–26. `[rosenbaum1987sensitivity]`
 - Tan, Z. (2006). *A distributional approach for causal inference using propensity scores.* JASA 101(476), 1619–1637. `[tan2006distributional]`

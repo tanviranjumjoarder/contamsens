@@ -27,7 +27,7 @@ CSM±(Λ⁺, Λ⁻, π, Γ_sel, ε) whose every parameter has a measured empiric
 counterpart, derive sharp partial-identification bounds for the
 uncontaminated score, and define the **contamination robustness value Γ\***
 — the minimum contamination strength that overturns a claim — computable
-from published scores alone. The v0.1 adversarial bound arises as the
+from published scores alone. The fully adversarial bound arises as the
 endpoint of a Rosenbaum-type selection family; Γ̂\* is consistent and
 √n-normal, and a paired bootstrap with Benjamini–Hochberg control yields
 FDR-certified robustness across a claim corpus. Ground-truth experiments
@@ -176,7 +176,7 @@ report μ̂ = (1/n) Σ yᵢ and treat it as θ, which requires c ≡ 0. Since it
 popular enough to benchmark are popular enough to scrape, and that
 popularity correlates with the skill being measured, c ⊥̸ y\*: textbook
 confounding, with c unobservable. θ is partially identified; the honest
-report is its identified set. (Full formalism: THEORY.md §1–2.)
+report is its identified set. (Full formalism and proofs: Appendix A.)
 
 ## 4. The contamination sensitivity model
 
@@ -190,7 +190,10 @@ B = the mean of the ⌈πn⌉ largest per-item deflation capacities
 dᵢ(Λ) = yᵢ − max(0, (yᵢ−Λ)/(1−Λ)); the bound is attained. **Corollary 1:**
 width ≤ πΛ, the worst per-unit-budget bias being exactly Λ at items with
 yᵢ = Λ. **Corollary 2:** Λ=0 recovers sampling-only analysis (rank
-intervals nest here).
+intervals nest here). Figure 1 plots the identified set against Λ at three
+budgets π on data with known ground truth; the true clean score lies
+inside the band at the true (Λ, π), and the band collapses to the point
+estimate as Λ → 0.
 
 **Regimes.** Continuous or repeated-measure per-item scores (R1) admit the
 sharp knapsack. Single-draw binary scores (R2) do **not**: dᵢ(0)=dᵢ(1)=0
@@ -246,7 +249,7 @@ consistent and √n-asymptotically normal, and the paired item bootstrap is
 valid. Empirically the RMSE slope is −0.518 against the theoretical −0.5,
 with bias ≤ 0.0025 from n = 100 to 25,600.
 
-**Finite draws (E9).** With m draws per item, the plug-in knapsack carries
+**Finite draws.** With m draws per item, the plug-in knapsack carries
 two *opposing* biases: Jensen smoothing (d is concave: a minimum of two
 linear functions) versus selection-on-noise. Measured: −40% at m = 2,
 crossing to +4% at m = 10, < 1% by m = 50. Joint sampling⊕identification
@@ -301,7 +304,7 @@ consistency failures occur exactly where λ̂ was pooled across doses,
 direct evidence for the dose-stratified calibration the pre-registration
 mandates.
 
-**Corpus dilution (Fig. 3 / f19).** The grid measures Λ under concentrated
+**Corpus dilution (Fig. 2 / f19).** The grid measures Λ under concentrated
 exposure (every training token is a leaked item), which is a ceiling, not
 the pretraining regime. The corpus-mix experiment holds the model, π, and
 per-item exposure count fixed and interleaves each leaked chunk with
@@ -374,7 +377,7 @@ falcon-7b was dropped on ARC (its snapshot's item template shares no items
 with the 15-model modal universe) and GPT-J on Winogrande (malformed score
 column).
 
-**Result (Fig. 1 / f17): 49 of 58 claims (84.5%) are not
+**Result (Fig. 3 / f17): 49 of 58 claims (84.5%) are not
 contamination-robust** (exact two-sided 95% CI [72.6%, 92.7%]; one-sided
 p = 2.7×10⁻²¹ against the pre-registered H4 threshold of 25%; excluding
 pilot-overlap pairs: 47/56 = 83.9%, CI [71.7%, 92.4%]). The ρ = 0.2
@@ -443,7 +446,7 @@ is transparent, a sceptical reader can re-derive every classification from
 the published margins without trusting our code, and can immediately see
 what would change it.
 
-**Sensitivity to the frozen constant (Fig. 2 / f18).** Since the decision
+**Sensitivity to the frozen constant (Fig. 4 / f18).** Since the decision
 depends on π and Λ only through their product, the entire (π, Λ) plane
 collapses to a single curve, which we sweep. The fraction of non-robust
 claims is 44.8% at Λ = 0.10, 70.7% at 0.20, 82.8% at 0.30, 84.5% at the
@@ -542,7 +545,30 @@ supporting lemmas (R2 degeneracy, finite-draw bias directions,
 Imbens–Manski properties, spillover extension) are in Appendix A
 (`appendix_proofs.md`), each pinned to a named unit test.*
 
-## 12. Reproducibility statement
+## 12. Conclusion
+
+The question "is this benchmark contaminated?" has no answer for a
+closed-weight model, and forty years of causal inference say the right
+response is to change the question. This paper asked "how much
+contamination would it take to overturn this claim?" and built the full
+chain needed to answer it: a sensitivity model whose axioms were tested
+against real memorization and twice repaired when they failed, sharp
+bounds with estimation theory, a calibration of contamination strength
+that the corpus-dilution experiment now reproduces in the laboratory for
+the scraped-pretraining case, and a pre-registered audit whose every
+constant was frozen and timestamped before unblinding.
+
+The empirical picture is specific. Robustness on the Open LLM Leaderboard
+is a monotone function of rank distance: comparisons across five or more
+positions essentially all survive, while 84.5% of neighbouring claims do
+not. A leaderboard is trustworthy about which era of models beats which,
+and untrustworthy about the pairwise comparisons its ranking format
+actively invites. The remedy costs one column: report Γ\* next to every
+margin, and let readers see which claims would survive the contamination
+everyone already suspects. Benchmarks that want more than the simple bound
+can earn it with published repeated draws and dated items; §10 prices both.
+
+## 13. Reproducibility statement
 
 Code, data artifacts, and this manuscript are public at
 <https://github.com/tanviranjumjoarder/contamsens> (MIT). Seed 42

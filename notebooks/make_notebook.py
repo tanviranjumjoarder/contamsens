@@ -33,7 +33,10 @@ Kaggle setup: Accelerator -> GPU (T4), Internet -> On, then Run All."""
 CELL_SETUP = r"""# torchao 0.10 ships in the Kaggle image and makes recent peft RAISE during
 # LoRA injection (it wants >= 0.16). We don't use torchao -- remove it.
 %pip -q uninstall -y torchao
+%pip -q install -U huggingface_hub
 %pip -q install transformers peft datasets accelerate
+import os
+os.environ["HF_HUB_DISABLE_XET"] = "1"  # httpx client-closed bug workaround
 # RUN_MODE:
 #   "grid"       -- the main pi x dose grid (COMPLETE, 24/24, 18 Jul 2026)
 #   "corpus_mix" -- the dilution experiment: leaked items interleaved with
@@ -61,17 +64,55 @@ else:  # corpus_mix_rep: seeds x models replication of the dilution sweep.
     SEEDS = {"Qwen/Qwen2.5-1.5B": [43, 44], "Qwen/Qwen2.5-0.5B": [42]}
 SUBJECTS = ["college_biology", "high_school_statistics", "philosophy", "marketing"]"""
 
-CELL_DATA = r"""import numpy as np, pandas as pd, torch, random
+CELL_DATA = r"""import numpy as np, pandas as pd, torch, random, time
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 random.seed(SEED); np.random.seed(SEED); torch.manual_seed(SEED)
 LETTERS = ["A", "B", "C", "D"]
 
+def _reset_hf_client():
+    # huggingface_hub >=1.0 shares one httpx client; on Kaggle it can be
+    # closed by a prior cell's teardown -> "client has been closed" on every
+    # later call. Null out whatever client cache this hub version keeps.
+    try:
+        from huggingface_hub.utils import _http
+        for attr in dir(_http):
+            if "client" in attr.lower():
+                obj = getattr(_http, attr)
+                if hasattr(obj, "cache_clear"):
+                    obj.cache_clear()
+                elif not callable(obj) and not attr.startswith("__"):
+                    try: setattr(_http, attr, None)
+                    except Exception: pass
+    except Exception:
+        pass
+
+def hf_load(*args, **kw):
+    for attempt in range(3):
+        try:
+            return load_dataset(*args, **kw)
+        except RuntimeError as e:
+            if "client has been closed" not in str(e) or attempt == 2:
+                raise
+            print(f"  hf client closed -- resetting (attempt {attempt+1})")
+            _reset_hf_client(); time.sleep(2)
+
+def _mmlu_parquet(subject):
+    # deterministic fallback: fetch the split parquet over plain urllib
+    import io, urllib.request
+    url = (f"https://huggingface.co/datasets/cais/mmlu/resolve/main/"
+           f"{subject}/test-00000-of-00001.parquet")
+    return pd.read_parquet(io.BytesIO(urllib.request.urlopen(url, timeout=120).read()))
+
 def load_items():
     rows = []
     for s in SUBJECTS:
-        ds = load_dataset("cais/mmlu", s, split="test")
+        try:
+            ds = hf_load("cais/mmlu", s, split="test")
+        except Exception as e:
+            print(f"  datasets failed for {s} ({type(e).__name__}); parquet fallback")
+            ds = _mmlu_parquet(s).to_dict("records")
         for i, ex in enumerate(ds):
             rows.append({"item_id": f"{s}/{i}", "question": ex["question"],
                          "choices": ex["choices"], "answer": int(ex["answer"])})
@@ -112,7 +153,7 @@ def neutral_chunks(tok, n, max_length=512):
     """Wikitext-103 chunks as the neutral corpus for the dilution experiment."""
     global _NEUTRAL
     if _NEUTRAL is None:
-        wiki = load_dataset("Salesforce/wikitext", "wikitext-103-raw-v1",
+        wiki = hf_load("Salesforce/wikitext", "wikitext-103-raw-v1",
                             split="train[:20000]")
         _NEUTRAL = [t for t in wiki["text"] if len(t) > 200]
     rng = np.random.default_rng(SEED)

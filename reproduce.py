@@ -30,6 +30,8 @@ FAST_STEPS = [
      [sys.executable, "scripts/run_pair_selection_check.py"]),
     ("P2d corpus-mix dilution (f19)",
      [sys.executable, "experiments/run_p2d_corpusmix.py"]),
+    ("H4 dependence check",
+     [sys.executable, "scripts/run_dependence_check.py"]),
 ]
 PILOT_STEP = ("P4 pilot (atlas)", [sys.executable, "experiments/run_p4_pilot_atlas.py"])
 LORA_STEP = ("P2c LoRA analysis", [sys.executable, "experiments/run_p2c_lora_analysis.py"])

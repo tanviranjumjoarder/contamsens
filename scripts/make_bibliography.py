@@ -123,6 +123,16 @@ CLASSICS = r"""
   doi     = {10.1111/j.2517-6161.1995.tb02031.x}
 }
 
+@book{manski2003partial,
+  author    = {Manski, Charles F.},
+  title     = {Partial Identification of Probability Distributions},
+  publisher = {Springer},
+  series    = {Springer Series in Statistics},
+  address   = {New York},
+  year      = {2003},
+  isbn      = {978-0-387-00454-9}
+}
+
 @article{benjamini2001control,
   author  = {Benjamini, Yoav and Yekutieli, Daniel},
   title   = {The Control of the False Discovery Rate in Multiple Testing
@@ -222,6 +232,9 @@ def main() -> None:
            "- Benjamini, Y. and Hochberg, Y. (1995). *Controlling the false "
            "discovery rate.* JRSS-B 57(1), 289–300. "
            "`[benjamini1995controlling]`",
+           "- Manski, C. F. (2003). *Partial Identification of Probability "
+           "Distributions.* Springer Series in Statistics. "
+           "`[manski2003partial]`",
            "- Benjamini, Y. and Yekutieli, D. (2001). *The control of the "
            "false discovery rate in multiple testing under dependency.* "
            "Annals of Statistics 29(4), 1165–1188. `[benjamini2001control]`",

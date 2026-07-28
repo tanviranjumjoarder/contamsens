@@ -47,9 +47,9 @@ const FIGURES = [
   ["Fig. 3 / f17", "f17_confirmatory.png",
    "Figure 3: The pre-registered confirmatory audit. Each point is one " +
    "adjacent leaderboard claim's Γ* at π = 0.1; gold bars mark the " +
-   "frozen stratum Λ_ref (0.42 HellaSwag, 0.355 elsewhere). Red claims " +
-   "fall below the calibrated contamination strength (49/58 = 84.5%); green " +
-   "claims survive."],
+   "frozen stratum Λ_ref (0.42 HellaSwag, 0.355 elsewhere). Vermillion " +
+   "claims fall below the calibrated contamination strength " +
+   "(49/58 = 84.5%); blue claims survive."],
   ["Fig. 4 / f18", "f18_lambda_sensitivity.png",
    "Figure 4: The headline does not hinge on the frozen constant. Because " +
    "the decision rule depends on (π, Λ) only through B = " +

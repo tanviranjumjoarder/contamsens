@@ -40,4 +40,5 @@ records, 21 July 2026):
 - VanderWeele, T. J. and Ding, P. (2017). *Sensitivity analysis in observational research: introducing the E-value.* Annals of Internal Medicine 167(4), 268–274. `[vanderweele2017evalue]`
 - Imbens, G. W. and Manski, C. F. (2004). *Confidence intervals for partially identified parameters.* Econometrica 72(6), 1845–1857. `[imbens2004confidence]`
 - Benjamini, Y. and Hochberg, Y. (1995). *Controlling the false discovery rate.* JRSS-B 57(1), 289–300. `[benjamini1995controlling]`
+- Manski, C. F. (2003). *Partial Identification of Probability Distributions.* Springer Series in Statistics. `[manski2003partial]`
 - Benjamini, Y. and Yekutieli, D. (2001). *The control of the false discovery rate in multiple testing under dependency.* Annals of Statistics 29(4), 1165–1188. `[benjamini2001control]`

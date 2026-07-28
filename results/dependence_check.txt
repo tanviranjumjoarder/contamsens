@@ -1,0 +1,12 @@
+H4 UNDER DEPENDENCE BETWEEN ADJACENT CLAIMS
+============================================================
+  odd  (model-disjoint within task): 25/30 = 83.3% non-robust, one-sided p vs 25% = 3.21e-11
+  even (model-disjoint within task): 24/28 = 85.7% non-robust, one-sided p vs 25% = 2.43e-11
+  per task:
+    arc:challenge|25: 13/14 = 92.9%  (p = 1.6e-07)
+    gsm8k|5: 8/15 = 53.3%  (p = 0.0173)
+    hellaswag|10: 14/15 = 93.3%  (p = 4.28e-08)
+    winogrande|5: 14/14 = 100.0%  (p = 3.73e-09)
+  observed rate 84.5% (49/58)
+  minimal effective sample size for alpha=0.05: n_eff = 3
+  (dependence would have to deflate 58 claims below 3 independent claims' worth of information to lose significance)

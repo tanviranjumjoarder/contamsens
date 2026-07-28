@@ -85,6 +85,10 @@ yields a contestable binary that vendors dispute and no protocol
 adjudicates. And detection is silent on the decision-relevant question:
 a benchmark can be contaminated with the ranking robust, or barely
 contaminated with the ranking fragile; detection cannot tell these apart.
+The partial-identification tradition [Manski, 2003] gives the honest
+alternative: when a quantity cannot be point-identified, report the set of
+values consistent with the data and every assumption you are willing to
+defend.
 
 Meanwhile the statistical wing of evaluation reform quantifies the *wrong
 error*. Rank intervals [2606.08679] propagate sampling uncertainty, which
@@ -92,7 +96,7 @@ shrinks with test-set size; contamination bias does not. A confidence
 interval that excludes the dominant error source is not a confidence
 interval.
 
-Causal inference confronted exactly this epistemology half a century ago.
+Causal inference confronted exactly this epistemology four decades ago.
 When a confounder cannot be measured, one does not detect it; one reports
 **how strong it would have to be to overturn the conclusion**: Rosenbaum's
 Γ, the marginal sensitivity model, the E-value [Rosenbaum, 1987; VanderWeele
@@ -390,6 +394,16 @@ has a margin above 5 points: cross-generation capability gaps
 (e.g. Llama-3-70B ≻ Qwen1.5-14B on GSM8K) and "everything beats GPT-J."
 The leaderboard's *ordering of eras* is contamination-robust; its
 *ordering of neighbors* is not.
+
+The exact test treats claims as independent, and adjacent claims are not:
+consecutive pairs share a model, and the same sixteen models recur across
+tasks. Three checks show the conclusion does not lean on that assumption.
+Splitting each task's chain into alternating halves, which share no model
+within a task, gives 83.3% and 85.7% non-robust (each p ≈ 3×10⁻¹¹). Every
+task rejects H4 on its own, the weakest being GSM8K at p = 0.017. And at
+the observed rate the exact test rejects for any effective sample size of
+three or more claims, so dependence would have to erase essentially all of
+the information in the corpus to change the answer.
 
 The protocol was pre-registered on the Open Science Framework
 (<https://osf.io/2436z>, DOI `10.17605/OSF.IO/2436Z`, registered 20 July

@@ -233,15 +233,15 @@ def main() -> None:
         sub = out[out.task == t]
         g = sub[f"gamma_star_pi{PI_PRIMARY}"].clip(upper=1.2)
         x = i + rng.uniform(-0.13, 0.13, len(sub))
-        colors = np.where(sub.non_robust_primary, "#d62828", "#2a9d8f")
+        colors = np.where(sub.non_robust_primary, "#D55E00", "#0072B2")
         ax.scatter(x, g, c=colors, s=34, alpha=0.85, zorder=3)
         ax.hlines(sub.lam_ref.iloc[0], i - 0.3, i + 0.3, color="#ffb703",
                   lw=2.5, zorder=2)
     ax.set_xticks(range(len(tasks)))
     ax.set_xticklabels([t.split("|")[0] for t in tasks], fontsize=9)
     ax.set_ylabel(r"$\Gamma^*(\pi = 0.1)$")
-    ax.set_title("Confirmatory audit: red = not contamination-robust at the "
-                 "frozen $\\Lambda_{ref}$ (gold bars)")
+    ax.set_title("Confirmatory audit: claims below the frozen "
+                 "$\\Lambda_{ref}$ (gold bars) are not contamination-robust")
     fig.tight_layout()
     fig.savefig(RESULTS / "figures" / "f17_confirmatory.png", dpi=200)
     plt.close(fig)

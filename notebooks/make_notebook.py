@@ -264,7 +264,19 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
             z.write(f)
             print("packed:", f.name, f"({f.stat().st_size/1e6:.2f} MB)")
 print("\nzip ready:", zip_path, f"({zip_path.stat().st_size/1e6:.2f} MB)")
-display(FileLink(str(zip_path)))  # click to download"""
+
+# AUTO-DOWNLOAD: in an interactive session the browser download starts by
+# itself (base64 data-URI + scripted click). In a committed "Save & Run All"
+# run there is no browser attached -- grab the zip from the Output tab.
+import base64
+from IPython.display import HTML
+
+b64 = base64.b64encode(zip_path.read_bytes()).decode()
+display(HTML(
+    f"<a id='dl' href='data:application/zip;base64,{b64}' "
+    f"download='{zip_path.name}'>backup link: {zip_path.name}</a>"
+    "<script>document.getElementById('dl').click();</script>"))
+display(FileLink(str(zip_path)))  # manual fallback"""
 
 CODE_CELLS = [CELL_SETUP, CELL_DATA, CELL_EVAL, CELL_TRAIN, CELL_MAIN,
               CELL_ANALYSIS, CELL_DOWNLOAD]

@@ -447,7 +447,13 @@ and you have lost nothing.
 Γ\* collapses to Δ̂/π only when items are binary and measured once, because
 the per-item deflation capacity degenerates (Lemma A.1): d(0) = d(1) = 0 for
 every Λ < 1. That is a statement about how impoverished single-draw
-accuracy data is, and it is worth hearing. Where richer data exists the
+accuracy data is, and it is worth hearing — and it is now a theorem, not
+an observation. Theorem 5 (Appendix A.9) shows that with one binary draw
+per item the observable law is Bernoulli in the mean alone, exhibits two
+indistinguishable populations whose clean means differ by exactly πΛ, and
+concludes that *no* procedure, ours or anyone's, can certify robustness
+beyond Δ̂/(π(1+ρ)) from such data. The ruler is minimax-optimal.
+Where richer data exists the
 machinery genuinely separates: with continuous per-item scores the sharp
 knapsack binds strictly tighter than πΛ (§9, TSFM atlas), and at m = 20
 repeated draws it certifies Γ\* = 0.172 against the simple bound's 0.154

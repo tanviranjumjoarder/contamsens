@@ -447,7 +447,13 @@ and you have lost nothing.
 Γ\* collapses to Δ̂/π only when items are binary and measured once, because
 the per-item deflation capacity degenerates (Lemma A.1): d(0) = d(1) = 0 for
 every Λ < 1. That is a statement about how impoverished single-draw
-accuracy data is, and it is worth hearing. Where richer data exists the
+accuracy data is, and it is worth hearing — and it is now a theorem, not
+an observation. Theorem 5 (Appendix A.9) shows that with one binary draw
+per item the observable law is Bernoulli in the mean alone, exhibits two
+indistinguishable populations whose clean means differ by exactly πΛ, and
+concludes that *no* procedure, ours or anyone's, can certify robustness
+beyond Δ̂/(π(1+ρ)) from such data. The ruler is minimax-optimal.
+Where richer data exists the
 machinery genuinely separates: with continuous per-item scores the sharp
 knapsack binds strictly tighter than πΛ (§9, TSFM atlas), and at m = 20
 repeated draws it certifies Γ\* = 0.172 against the simple bound's 0.154
@@ -777,6 +783,52 @@ proof of Prop. 1 goes through with the decomposition
 θ = μ̂ − (contaminated deflation) − (clean-item drift). ε is estimable from
 twin experiments (measured 0.003–0.30, growing with dose).
 [`test_twosided_upper_moves_only_with_lam_minus`; `p2b_spillover_fix.csv`]
+
+
+## A.9 Theorem 5 (minimax optimality of the simple bound in the binary regime)
+
+**Setting.** Single-draw binary regime R2 under the iid item sampling of
+Theorem 4: items are drawn from a population P over (p\*, c, δ); the
+analyst observes one draw y ~ Bernoulli(p) per item, p = p\* + cδ, with
+E[c] ≤ π and, in CSM±, −Λ⁻p\* ≤ δ ≤ Λ⁺(1 − p\*). The estimand is
+θ(P) = E[p\*]; write μ(P) = E[p] and Λ = Λ⁺.
+
+**Theorem 5 (statement).** (i) With one draw per item the observable law
+is iid Bernoulli(μ(P)): populations with equal μ are exactly
+indistinguishable at every sample size. (ii) For interior μ
+(πΛ ≤ μ ≤ 1 − π(1−Λ)), the identified set for θ given μ is exactly
+[μ − πΛ, μ] at ρ = 0, and the width πΛ is attained by a feasible
+population. (iii) Any interval procedure uniformly valid over the model
+class has width at least πΛ; any claim-robustness procedure can certify at
+most Γ\* = Δ/(π(1+ρ)). The reduction of §9.2 is therefore not a
+limitation of our estimator: it is the full information content of
+single-draw binary data.
+
+**Proof.** (i) Conditional on an item, y is Bernoulli(p); marginalising
+over P, a single draw is Bernoulli(E[p]) and items are iid, so the sample
+is iid Bernoulli(μ). Higher moments of p are not identified with one draw
+per item. (ii) Upper endpoint: at ρ = 0, δ ≥ 0, so θ ≤ μ, attained by the
+uncontaminated population p\* ≡ μ. Lower endpoint: feasibility requires
+δ ≤ min(p, Λ(1 − p\*)) and the two constraints cross at p = Λ, where
+p\* = 0 and δ = Λ are simultaneously feasible; so per-item bias is at most
+Λ and E[cδ] ≤ πΛ. Attainment: let P₂ place mass π on contaminated items
+with p\* = 0, δ = Λ (hence p = Λ) and mass 1 − π on clean items with
+p\* = (μ − πΛ)/(1 − π), which lies in [0, 1] exactly on the stated
+interior range. Then μ(P₂) = μ and θ(P₂) = μ − πΛ. The population P₁ with
+p\* ≡ μ, c ≡ 0 has μ(P₁) = μ and θ(P₁) = μ. By (i) the two are
+indistinguishable, so both endpoints belong to the identified set, and by
+the bias bound nothing below μ − πΛ does. (iii) A uniformly valid
+interval must contain θ(P₁) = μ and θ(P₂) = μ − πΛ on data laws it cannot
+tell apart, hence has width ≥ πΛ. For a claim A ≻ B with margin Δ,
+applying the P₂ construction to model A (deflation at Λ⁺) and its mirror
+to model B (inflation at Λ⁻ = ρΛ⁺) reverses the population margin
+whenever πΛ(1 + ρ) > Δ while leaving both observable laws unchanged;
+hence no procedure can certify robustness at any Λ > Δ/(π(1+ρ)). ∎
+
+The library's `max_bias_simple` reports exactly this width, and
+`gamma_star(..., simple=True)` the certificate ceiling.
+[`test_minimax_indistinguishable_pair`,
+`test_minimax_no_narrower_certificate`]
 
 ---
 

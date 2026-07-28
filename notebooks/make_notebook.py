@@ -41,8 +41,8 @@ CELL_SETUP = r"""# torchao 0.10 ships in the Kaggle image and makes recent peft 
 #                   same dose arrives diluted through a mixed corpus --
 #                   interpolating the concentrated-exposure ceiling toward
 #                   the pretraining regime (~1-2 h on a T4)
-RUN_MODE = "corpus_mix"
-SEED = 42
+RUN_MODE = "corpus_mix_rep"
+SEED = 42  # base; corpus_mix_rep sweeps SEEDS
 # Same-family pair isolates CAPACITY in the dose-response comparison
 # (TinyLlama dropped: fp16 llama-family training NaN'd on T4; Qwen2.5-0.5B
 # is the controlled small-capacity replacement and ships safetensors).
@@ -50,9 +50,15 @@ if RUN_MODE == "grid":
     MODELS = ["Qwen/Qwen2.5-1.5B", "Qwen/Qwen2.5-0.5B"]
     CONFIGS = [(pi, dose, 0) for pi in [0.05, 0.1, 0.25, 0.5]
                for dose in [1, 4, 16]]
-else:  # corpus_mix: reduced grid, mix is the swept variable
+elif RUN_MODE == "corpus_mix":
     MODELS = ["Qwen/Qwen2.5-1.5B"]
     CONFIGS = [(0.1, dose, mix) for dose in [1, 4] for mix in [0, 4, 20]]
+else:  # corpus_mix_rep: seeds x models replication of the dilution sweep.
+    # 1.5B seeds 43,44 (seed 42 = the original run) + 0.5B seed 42.
+    # ~5-6 h total on a T4; checkpointed per config, safe to split sessions.
+    MODELS = ["Qwen/Qwen2.5-1.5B", "Qwen/Qwen2.5-0.5B"]
+    CONFIGS = [(0.1, dose, mix) for dose in [1, 4] for mix in [0, 4, 20]]
+    SEEDS = {"Qwen/Qwen2.5-1.5B": [43, 44], "Qwen/Qwen2.5-0.5B": [42]}
 SUBJECTS = ["college_biology", "high_school_statistics", "philosophy", "marketing"]"""
 
 CELL_DATA = r"""import numpy as np, pandas as pd, torch, random
@@ -154,8 +160,9 @@ CELL_MAIN = r"""# Checkpointed grid: results are appended to the CSV after EVERY
 # resumes by simply re-running this cell (keep the CSV in /kaggle/working).
 import os
 
-OUT_CSV = ("contamctrl_lora_peritem.csv" if RUN_MODE == "grid"
-           else "contamctrl_corpusmix_peritem.csv")
+OUT_CSV = {"grid": "contamctrl_lora_peritem.csv",
+           "corpus_mix": "contamctrl_corpusmix_peritem.csv",
+           "corpus_mix_rep": "contamctrl_corpusmix_rep_peritem.csv"}[RUN_MODE]
 if not os.path.exists(OUT_CSV):
     # recover a prior checkpoint attached as a Kaggle input dataset
     import glob, shutil
@@ -170,12 +177,17 @@ if os.path.exists(OUT_CSV):
     if "mix" not in prev.columns:
         prev["mix"] = 0
     results.append(prev)
-    done = set(zip(prev["model"], prev["pi"], prev["dose"], prev["mix"]))
+    if "seed" not in prev.columns:
+        prev["seed"] = SEED
+    done = set(zip(prev["model"], prev["pi"], prev["dose"], prev["mix"],
+                   prev["seed"]))
     print(f"resuming: {len(done)} configs already checkpointed")
 
 for model_id in MODELS:
-    todo = [(pi, dose, mix) for pi, dose, mix in CONFIGS
-            if (model_id, pi, dose, mix) not in done]
+    seeds = (SEEDS.get(model_id, [SEED]) if RUN_MODE == "corpus_mix_rep"
+             else [SEED])
+    todo = [(pi, dose, mix, sd) for pi, dose, mix in CONFIGS for sd in seeds
+            if (model_id, pi, dose, mix, sd) not in done]
     if not todo:
         print(f"{model_id}: all configs already done"); continue
     tok = AutoTokenizer.from_pretrained(model_id)
@@ -187,12 +199,14 @@ for model_id in MODELS:
         model_id, torch_dtype=torch.float32, device_map="auto")
     y_clean = per_item_scores(base, tok, items)
     probe = y_clean[:16].copy()
-    for pi, dose, mix in CONFIGS:
-        if (model_id, pi, dose, mix) in done:
+    for pi, dose, mix, sd in todo:
+        if (model_id, pi, dose, mix, sd) in done:
             continue
-        rng = np.random.default_rng(SEED)
+        rng = np.random.default_rng(sd)
+        torch.manual_seed(sd)
         c_idx = rng.choice(len(items), int(pi * len(items)), replace=False)
-        tag = f"{model_id.split('/')[-1]} pi={pi} dose={dose} mix={mix}"
+        tag = (f"{model_id.split('/')[-1]} pi={pi} dose={dose} "
+               f"mix={mix} seed={sd}")
         print(f"config {tag}: {len(c_idx)} leaked items", flush=True)
         t0 = time.time()
         m = lora_contaminate(base, tok, items, c_idx, dose, mix=mix, tag=tag)
@@ -212,6 +226,7 @@ for model_id in MODELS:
         df["y_clean"], df["y_obs"] = y_clean, y_obs
         df["contaminated"] = np.isin(np.arange(len(items)), c_idx)
         df["model"], df["pi"], df["dose"], df["mix"] = model_id, pi, dose, mix
+        df["seed"] = sd
         results.append(df)
         pd.concat(results).to_csv(OUT_CSV, index=False)  # checkpoint
         print(f"  done in {time.time() - t0:.0f}s | mean lift on leaked: "

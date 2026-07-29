@@ -34,10 +34,22 @@ ground-truth validation at two scales, the corpus-dilution experiment,
 Λ calibration, and the pre-registered confirmatory audit. Headline: **49 of
 58 adjacent Open LLM Leaderboard claims (84.5%) are not
 contamination-robust** at the frozen calibration; robustness falls
-monotonically with rank distance (0% non-robust at rank gap ≥ 6). See
-[THEORY.md](THEORY.md) for the formal note, [paper/](paper/) for the manuscript
-and proofs appendix, and [PROVENANCE.md](PROVENANCE.md) for the mapping from
-every reported number to the script that produced it.
+monotonically with rank distance (0% non-robust at rank gap ≥ 6).
+
+**The paper.** The final manuscript is
+[paper/contamsens_manuscript_Q1_rewrite.docx](paper/contamsens_manuscript_Q1_rewrite.docx)
+(PDF alongside it): *Contamination Robustness Values: Sensitivity Analysis
+for Benchmark Claims Under Unverifiable Data Leakage*, 20 pages, IEEE
+numeric citations. Everything else in `paper/` is the working draft it grew
+from — `manuscript.md` plus `appendix_proofs.md`, assembled by
+`scripts/assemble_paper.py` into `PAPER_FINAL.md` and rendered by
+`scripts/make_docx.js`. The working draft is kept because every number in it
+is script-generated and traceable, but where the two differ, the Q1 file is
+authoritative.
+
+See also [THEORY.md](THEORY.md) for the formal note and
+[PROVENANCE.md](PROVENANCE.md) for the mapping from every reported number to
+the script that produced it.
 
 ---
 

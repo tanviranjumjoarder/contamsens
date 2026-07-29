@@ -325,10 +325,19 @@ lift triples, and violations collapse from 0.18 to 0.03. Interleaving
 neutral text between repeated exposures is spaced rather than massed
 practice, and it *consolidates* memorization. Deliberate or repeated
 contamination (a benchmark recurring in a fine-tuning mix) saturates
-toward Λ = 1 no matter how diluted the corpus. Both movements dwarf the
-measured session-reproduction noise (≤ 0.039 on Λ̂_q95, from re-running
-identical configs on fresh GPU sessions; the clean-twin scores and
-contamination indices reproduce exactly). The practical consequences:
+toward Λ = 1 no matter how diluted the corpus. A replication over three
+seeds and a second model sharpens what is stable and what is not. The
+consolidation endpoint replicates almost exactly: Λ̂_q95 at dose 4,
+mix 20 is 0.976, 0.988, 0.982 across seeds (range 0.012), and the dose-4
+upward trend is monotone in every seed. The dose-1 *diluted endpoint*
+also replicates inside the field range (0.286–0.346 across seeds). The
+dose-1 *concentrated starting point*, by contrast, is seed-noisy
+(0.27–0.58): a single light exposure produces an unstable memorization
+level, so we claim the diluted endpoint and the consolidation law as
+replicated findings and treat the concentrated dose-1 level as noisy. The
+0.5B model shows the same structure at lower levels (dose-1 lift ≈ 0,
+dose-4 consolidation 0.68 → 0.76), consistent with the capacity law. The
+practical consequences:
 the field range is *validated* for accidental scrape-style contamination,
 and the concentrated "measured-ceiling" policy of §8 is *necessary*:
 repeated-exposure contamination exceeds even the concentrated ceiling, so
@@ -541,10 +550,11 @@ item is what entitles a benchmark to sharp identification.
 (1) A1's channel shape is validated with real memorization at small scale,
 LLM scale, and now under corpus dilution (§7); the remaining gap is scale
 itself: our largest injection model is 1.5B parameters and the dilution
-sweep covers one model, one π, and a single seed per configuration
-(session-reproduction noise is measured at ≤ 0.039 on Λ̂_q95, well below
-the effects reported, but a multi-seed replication would still tighten
-it). The dose-1 dilution result lands inside the field range; whether
+sweep covers two models, one π, and three seeds. The replication showed
+seed noise is small where it matters (0.012 at the consolidation
+endpoint) and large at concentrated single exposure (0.31), and the
+per-claim conclusions quoted here are the seed-stable ones. The dose-1
+diluted endpoint lands inside the field range in every seed; whether
 that interpolation holds at 70B-scale pretraining is an extrapolation we
 flag, not a measurement we own. (2) In the single-draw binary
 regime (most current leaderboards), (Λ, π) enter only through their

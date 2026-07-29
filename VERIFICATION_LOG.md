@@ -16,7 +16,10 @@ entry is worth.** Three levels are used:
 
 Only an `independent` entry can retire limitation §11(6) of the paper. A
 `coauthor` entry establishes something smaller and real: that the artifact
-runs on a second machine, under a second pair of hands.
+runs for a second pair of hands, working from the public repository rather
+than the development copy. Whether it also establishes a second *machine*
+depends on the environment recorded in the entry, so every entry pastes its
+`run_manifest.json` and says plainly what its environment does not prove.
 
 ## How to add an entry
 
@@ -83,6 +86,60 @@ verbatim rather than retyping it.
   mathematician.
 - **Outcome:** the replication guide is now known to be executable end to
   end. Limitation §11(6) stands unchanged.
+
+---
+
+## Entry 2 — 2026-07-29 — coauthor clean-clone run
+
+- **Who:** Md. Sadman Anjum Joarder, Rajshahi University of Engineering &
+  Technology.
+- **Independence:** `coauthor`. A listed author has a stake in the result,
+  so this entry does **not** retire limitation §11(6). What it does
+  establish is narrower and still worth recording: a second person, working
+  from the public repository rather than the development copy, re-derived
+  every committed number.
+- **What was run:** `git clone` of the public repository into a new
+  directory, `pip install -e .[experiments,test]`, then
+  `python reproduce.py`.
+- **Repository state:** clone at `3e8303f`, the current HEAD at the time of
+  the run.
+
+**Results.** All 8 steps passed in 53.3 s.
+
+Every file under `results/` regenerated **byte-identically** to the
+committed versions. `git diff` across the directory reports one changed
+file, `run_manifest.json`, which necessarily differs because it records the
+run's own timestamp and step list. The headline numbers re-derived from
+this clone's own regenerated outputs: 58 claims, 49 non-robust, 8 BH
+certificates, 6 BY.
+
+```json
+{
+  "timestamp_utc": "2026-07-29T08:49:47Z",
+  "python": "3.13.1",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "machine": "AMD64",
+  "packages": {
+    "numpy": "2.2.2", "scipy": "1.15.1", "pandas": "3.0.3",
+    "matplotlib": "3.11.0", "scikit-learn": "1.6.1", "pytest": "9.1.1"
+  },
+  "seed": 42,
+  "wall_seconds": 53.3
+}
+```
+
+- **Environment caveat, stated because it limits what this entry proves:**
+  the platform string, Python version, and every package version are
+  identical to Entry 1. The run happened on the same machine and the same
+  interpreter. It therefore says nothing about cross-platform or
+  cross-version reproduction. A replicator on Linux, or on different
+  package versions, would test something this entry cannot.
+- **Not checked:** the three-hour path (re-downloading the leaderboard data
+  and rebuilding `confirmatory_audit.csv` from nothing) was not run. The
+  proofs in Appendix A were not verified by hand.
+- **Outcome:** the committed results are reproducible from the public
+  repository by someone other than the code's author. Limitation §11(6)
+  stands: no `independent` entry exists yet.
 
 ---
 

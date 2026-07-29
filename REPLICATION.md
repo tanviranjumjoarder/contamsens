@@ -40,9 +40,12 @@ registration (DOI 10.17605/OSF.IO/2436Z, filed 2026-07-20).
 
 Every recorded run lives in [VERIFICATION_LOG.md](VERIFICATION_LOG.md), each
 entry labelled `author`, `coauthor`, or `independent`. As of this writing it
-holds exactly one entry, at `author` level: a dry run of these instructions
-that found and fixed a step which broke on fresh clones. No independent run
-has happened yet. That is stated in the paper (SS11) rather than glossed, and
+holds two entries. One is `author` level: a dry run of these instructions
+that found and fixed a step which broke on fresh clones. One is `coauthor`
+level: a second author cloned this repository and reproduced every file in
+`results/` byte-identically. Both ran on the same machine, so neither tests
+a different platform, and neither is independent. No independent run has
+happened yet. That is stated in the paper (SS11) rather than glossed, and
 your entry would be the first of its kind.
 
 ## Reporting

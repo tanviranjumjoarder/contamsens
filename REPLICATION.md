@@ -36,6 +36,15 @@ Expected: byte-identical CSV (seed 42, frozen protocol).
 Both diffs must be empty; the hash must match the one in the OSF
 registration (DOI 10.17605/OSF.IO/2436Z, filed 2026-07-20).
 
+## The verification log
+
+Every recorded run lives in [VERIFICATION_LOG.md](VERIFICATION_LOG.md), each
+entry labelled `author`, `coauthor`, or `independent`. As of this writing it
+holds exactly one entry, at `author` level: a dry run of these instructions
+that found and fixed a step which broke on fresh clones. No independent run
+has happened yet. That is stated in the paper (SS11) rather than glossed, and
+your entry would be the first of its kind.
+
 ## Reporting
 
 Open a GitHub issue titled "Replication report" with your platform,

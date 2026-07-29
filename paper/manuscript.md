@@ -568,7 +568,14 @@ before any confirmatory Γ\* is computed. (5) ε-spillover should vanish at
 LLM corpus scale but is measured, not assumed. (6) This artifact was
 audited by its own author (four forensic iterations, including a critical
 binary-regime guard); an independent adversarial audit is the correct next
-scrutiny.
+scrutiny, and has not yet happened. We do not paper over this. The
+repository carries a verification log recording every attempt to re-run the
+artifact, each entry labelled by the runner's independence; at the time of
+writing it contains one author-level entry, which established only that the
+replication instructions execute from a clean clone (and fixed a step that
+did not). Readers can therefore see the absence of independent verification
+rather than infer it. The fifteen-minute path is documented in
+`REPLICATION.md`, and discrepancy reports of any size are solicited.
 
 *Formal statements and proofs of Propositions 1–3, Theorem 4, and the
 supporting lemmas (R2 degeneracy, finite-draw bias directions,

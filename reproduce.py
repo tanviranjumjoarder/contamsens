@@ -26,8 +26,6 @@ FAST_STEPS = [
     # Reads the committed confirmatory_audit.csv; no network, no GPU.
     ("Lambda_ref sensitivity (f18)",
      [sys.executable, "scripts/run_lambda_sensitivity.py"]),
-    ("adjacent-pair selection check",
-     [sys.executable, "scripts/run_pair_selection_check.py"]),
     ("P2d corpus-mix dilution (f19)",
      [sys.executable, "experiments/run_p2d_corpusmix.py"]),
     ("H4 dependence check",
@@ -84,6 +82,13 @@ def write_manifest(steps: list, seconds: float) -> None:
 def main() -> None:
     full = "--full" in sys.argv
     steps = list(FAST_STEPS)
+    if (ROOT / "data" / "oll_audit").is_dir():
+        steps.insert(6, ("adjacent-pair selection check",
+                         [sys.executable, "scripts/run_pair_selection_check.py"]))
+    else:
+        print("note: data/oll_audit cache missing -> pair-selection check "
+              "skipped (run scripts/run_confirmatory_audit.py once, with "
+              "network, to rebuild it)")
     if (ROOT / "data" / "atlas_pilot" / "atlas_delta.csv").exists():
         steps.append(PILOT_STEP)
     else:

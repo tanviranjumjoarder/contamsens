@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-07-28T16:38:43Z",
+  "timestamp_utc": "2026-07-29T05:50:26Z",
   "python": "3.13.1",
   "platform": "Windows-10-10.0.19045-SP0",
   "machine": "AMD64",
@@ -18,11 +18,11 @@
     "P1 estimation theory",
     "P5 design sensitivity",
     "Lambda_ref sensitivity (f18)",
-    "adjacent-pair selection check",
     "P2d corpus-mix dilution (f19)",
+    "adjacent-pair selection check",
     "H4 dependence check",
     "P4 pilot (atlas)",
     "P2c LoRA analysis"
   ],
-  "wall_seconds": 73.0
+  "wall_seconds": 112.0
 }
